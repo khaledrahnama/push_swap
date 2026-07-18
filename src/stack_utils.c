@@ -1,20 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   stack_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/18 11:54:11 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/18 11:54:16 by khaledrahna      ###   ########.fr       */
+/*   Created: 2026/07/18 11:51:52 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/07/18 11:51:53 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
-
-int main(int argc, char **argv)
-{
-	(void)argc;
-	(void)argv;
-	return (0);
-}
