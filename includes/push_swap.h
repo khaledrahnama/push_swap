@@ -36,4 +36,6 @@ void	op_rra(t_stack *a, int print);
 void	op_rrb(t_stack *b, int print);
 void	op_rrr(t_stack *a, t_stack *b, int print);
 
+void	sort_simple(t_stack *a, t_stack *b);
+
 #endif
