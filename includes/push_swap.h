@@ -11,7 +11,7 @@ typedef struct s_stack
 	int	size;
 }	t_stack;
 
-int		main(void);
+int main(int argc, char **argv);
 
 void	stack_init(t_stack *stack, int capacity);
 void	stack_free(t_stack *stack);
