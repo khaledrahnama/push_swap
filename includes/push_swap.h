@@ -24,6 +24,10 @@ int		ft_strlen(const char *s);
 void	ft_putnbr_fd(long n, int fd);
 void	ft_putstr_fd(const char *s, int fd);
 
+int		int_sqrt(int n);
+void	copy_ints(int *dst, int *src, int n);
+void	sort_ints(int *arr, int n);
+
 void	op_sa(t_stack *a, int print);
 void	op_sb(t_stack *b, int print);
 void	op_ss(t_stack *a, t_stack *b, int print);
@@ -37,5 +41,7 @@ void	op_rrb(t_stack *b, int print);
 void	op_rrr(t_stack *a, t_stack *b, int print);
 
 void	sort_simple(t_stack *a, t_stack *b);
+void	sort_medium(t_stack *a, t_stack *b);
+
 
 #endif
