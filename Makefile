@@ -7,7 +7,7 @@ SRCS_DIR	= srcs
 OBJS_DIR	= objs
 INC_DIR		= includes
 
-SRCS		= main.c stack_utils.c parsing.c ft_utils.c operations.c sort_simple.c sort_medium.c sort_medium_utils.c
+SRCS		= main.c stack_utils.c parsing.c ft_utils.c operations.c sort_simple.c sort_medium.c sort_medium_utils.c sort_complex.c sort_complex_utils.c
 OBJS		= $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
 all: $(NAME)

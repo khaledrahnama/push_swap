@@ -26,7 +26,7 @@ void	ft_putstr_fd(const char *s, int fd);
 
 int		int_sqrt(int n);
 void	copy_ints(int *dst, int *src, int n);
-void	sort_ints(int *arr, int n);
+void	sort_ints_med(int *arr, int n);
 
 int		*build_sorted_copy(t_stack *a);
 int		rank_of(int value, int *sorted, int n);

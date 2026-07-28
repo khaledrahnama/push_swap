@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 15:37:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/26 15:37:53 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/28 13:40:08 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	copy_ints(int *dst, int *src, int n)
 	}
 }
 
-void	sort_ints(int *arr, int n)
+void	sort_ints_med(int *arr, int n)
 {
 	int	i;
 	int	j;
