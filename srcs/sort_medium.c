@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 15:38:49 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/26 15:38:53 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/28 13:31:10 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,50 @@ static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax)
 	}
 }
 
-static void	insert_fixup(t_stack *a)
+static int	find_max_index(t_stack *b)
 {
-	while (a->size >= 2 && a->data[0] > a->data[1])
+	int	max_idx;
+	int	i;
+
+	max_idx = 0;
+	i = 1;
+	while (i < b->size)
 	{
-		op_sa(a, 1);
-		op_ra(a, 1);
+		if (b->data[i] > b->data[max_idx])
+			max_idx = i;
+		i++;
+	}
+	return (max_idx);
+}
+
+static void	rotate_b_to_top(t_stack *b, int index)
+{
+	int	steps_up;
+	int	steps_down;
+
+	steps_up = index;
+	steps_down = b->size - index;
+	if (steps_up <= steps_down)
+	{
+		while (steps_up-- > 0)
+			op_rb(b, 1);
+	}
+	else
+	{
+		while (steps_down-- > 0)
+			op_rrb(b, 1);
+	}
+}
+
+static void	drain_max_to_a(t_stack *a, t_stack *b)
+{
+	int	max_idx;
+
+	while (b->size > 0)
+	{
+		max_idx = find_max_index(b);
+		rotate_b_to_top(b, max_idx);
+		op_pa(a, b, 1);
 	}
 }
 
@@ -57,24 +95,20 @@ void	sort_medium(t_stack *a, t_stack *b)
 		exit(1);
 	}
 	copy_ints(sorted, a->data, n);
-	sort_ints(sorted, n);
-	chunk_size = int_sqrt(n);
+	sort_ints_med(sorted, n);
+	chunk_size = (int_sqrt(n) * 5) / 2;
 	if (chunk_size < 1)
 		chunk_size = 1;
 	num_chunks = (n + chunk_size - 1) / chunk_size;
-	c = 0;
-	while (c < num_chunks)
+	c = num_chunks - 1;
+	while (c >= 0)
 	{
 		hi_i = (c + 1) * chunk_size - 1;
 		if (hi_i > n - 1)
 			hi_i = n - 1;
 		sweep_chunk(a, b, sorted[c * chunk_size], sorted[hi_i]);
-		c++;
+		drain_max_to_a(a, b);
+		c--;
 	}
 	free(sorted);
-	while (b->size > 0)
-	{
-		op_pa(a, b, 1);
-		insert_fixup(a);
-	}
 }
