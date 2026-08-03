@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sort_medium.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/26 15:38:49 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/28 13:31:10 by khaledrahna      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
 static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax)
