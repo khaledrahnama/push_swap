@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 11:54:11 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/03 10:18:53 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/04 14:06:27 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	main(int argc, char **argv)
 		return (0);
 	parse_args(argc, argv, &a);
 	stack_init(&b, a.size);
-	//sort_simple(&a, &b);
+	sort_simple(&a, &b);
 	//sort_medium(&a, &b);
-	sort_complex(&a, &b);
+	//sort_complex(&a, &b);
 	stack_free(&a);
 	stack_free(&b);
 	return (0);
