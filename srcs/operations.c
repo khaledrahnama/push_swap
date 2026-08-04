@@ -6,13 +6,13 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 15:25:22 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/19 15:25:27 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/04 14:41:18 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	op_sa(t_stack *a, int print)
+void	op_sa(t_stack *a, int print, t_stats *stats)
 {
 	int	tmp;
 
@@ -24,9 +24,11 @@ void	op_sa(t_stack *a, int print)
 	}
 	if (print)
 		ft_putstr_fd("sa\n", 1);
+	if (stats)
+		stats->sa++;
 }
 
-void	op_sb(t_stack *b, int print)
+void	op_sb(t_stack *b, int print, t_stats *stats)
 {
 	int	tmp;
 
@@ -38,17 +40,21 @@ void	op_sb(t_stack *b, int print)
 	}
 	if (print)
 		ft_putstr_fd("sb\n", 1);
+	if (stats)
+		stats->sb++;
 }
 
-void	op_ss(t_stack *a, t_stack *b, int print)
+void	op_ss(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
-	op_sa(a, 0);
-	op_sb(b, 0);
+	op_sa(a, 0, NULL);
+	op_sb(b, 0, NULL);
 	if (print)
 		ft_putstr_fd("ss\n", 1);
+	if (stats)
+		stats->ss++;
 }
 
-void	op_pa(t_stack *a, t_stack *b, int print)
+void	op_pa(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
 	int	i;
 
@@ -72,9 +78,11 @@ void	op_pa(t_stack *a, t_stack *b, int print)
 	}
 	if (print)
 		ft_putstr_fd("pa\n", 1);
+	if (stats)
+		stats->pa++;
 }
 
-void	op_pb(t_stack *a, t_stack *b, int print)
+void	op_pb(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
 	int	i;
 
@@ -98,9 +106,11 @@ void	op_pb(t_stack *a, t_stack *b, int print)
 	}
 	if (print)
 		ft_putstr_fd("pb\n", 1);
+	if (stats)
+		stats->pb++;
 }
 
-void	op_ra(t_stack *a, int print)
+void	op_ra(t_stack *a, int print, t_stats *stats)
 {
 	int	first;
 	int	i;
@@ -118,9 +128,11 @@ void	op_ra(t_stack *a, int print)
 	}
 	if (print)
 		ft_putstr_fd("ra\n", 1);
+	if (stats)
+		stats->ra++;
 }
 
-void	op_rb(t_stack *b, int print)
+void	op_rb(t_stack *b, int print, t_stats *stats)
 {
 	int	first;
 	int	i;
@@ -138,17 +150,21 @@ void	op_rb(t_stack *b, int print)
 	}
 	if (print)
 		ft_putstr_fd("rb\n", 1);
+	if (stats)
+		stats->rb++;
 }
 
-void	op_rr(t_stack *a, t_stack *b, int print)
+void	op_rr(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
-	op_ra(a, 0);
-	op_rb(b, 0);
+	op_ra(a, 0, NULL);
+	op_rb(b, 0, NULL);
 	if (print)
 		ft_putstr_fd("rr\n", 1);
+	if (stats)
+		stats->rr++;
 }
 
-void	op_rra(t_stack *a, int print)
+void	op_rra(t_stack *a, int print, t_stats *stats)
 {
 	int	last;
 	int	i;
@@ -166,9 +182,11 @@ void	op_rra(t_stack *a, int print)
 	}
 	if (print)
 		ft_putstr_fd("rra\n", 1);
+	if (stats)
+		stats->rra++;
 }
 
-void	op_rrb(t_stack *b, int print)
+void	op_rrb(t_stack *b, int print, t_stats *stats)
 {
 	int	last;
 	int	i;
@@ -186,12 +204,16 @@ void	op_rrb(t_stack *b, int print)
 	}
 	if (print)
 		ft_putstr_fd("rrb\n", 1);
+	if (stats)
+		stats->rrb++;
 }
 
-void	op_rrr(t_stack *a, t_stack *b, int print)
+void	op_rrr(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
-	op_rra(a, 0);
-	op_rrb(b, 0);
+	op_rra(a, 0, NULL);
+	op_rrb(b, 0, NULL);
 	if (print)
 		ft_putstr_fd("rrr\n", 1);
+	if (stats)
+		stats->rrr++;
 }

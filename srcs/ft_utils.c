@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 12:24:14 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/19 12:24:18 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/04 14:37:41 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,18 @@ void	ft_putnbr_fd(long n, int fd)
 		ft_putnbr_fd(n / 10, fd);
 	c = (n % 10) + '0';
 	write(fd, &c, 1);
+}
+
+int	ft_strequ(const char *a, const char *b)
+{
+	int	i;
+
+	i = 0;
+	while (a[i] && b[i])
+	{
+		if (a[i] != b[i])
+			return (0);
+		i++;
+	}
+	return (a[i] == '\0' && b[i] == '\0');
 }

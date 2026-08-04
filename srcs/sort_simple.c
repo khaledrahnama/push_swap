@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 16:32:27 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/19 16:35:08 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/04 14:41:38 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	find_min_index(t_stack *a)
 	return (min_idx);
 }
 
-static void	rotate_to_top(t_stack *a, int index)
+static void	rotate_to_top(t_stack *a, int index, t_stats *stats)
 {
 	int	steps_up;
 	int	steps_down;
@@ -38,25 +38,25 @@ static void	rotate_to_top(t_stack *a, int index)
 	if (steps_up <= steps_down)
 	{
 		while (steps_up-- > 0)
-			op_ra(a, 1);
+			op_ra(a, 1, stats);
 	}
 	else
 	{
 		while (steps_down-- > 0)
-			op_rra(a, 1);
+			op_rra(a, 1, stats);
 	}
 }
 
-void	sort_simple(t_stack *a, t_stack *b)
+void	sort_simple(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	min_idx;
 
 	while (a->size > 0)
 	{
 		min_idx = find_min_index(a);
-		rotate_to_top(a, min_idx);
-		op_pb(a, b, 1);
+		rotate_to_top(a, min_idx, stats);
+		op_pb(a, b, 1, stats);
 	}
 	while (b->size > 0)
-		op_pa(a, b, 1);
+		op_pa(a, b, 1, stats);
 }

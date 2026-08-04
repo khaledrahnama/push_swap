@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_medium.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/04 14:32:29 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/04 14:41:55 by khaledrahna      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax)
+static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax,
+		t_stats *stats)
 {
 	int	sweep_count;
 	int	i;
@@ -10,9 +23,9 @@ static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax)
 	while (i < sweep_count)
 	{
 		if (a->data[0] >= cmin && a->data[0] <= cmax)
-			op_pb(a, b, 1);
+			op_pb(a, b, 1, stats);
 		else
-			op_ra(a, 1);
+			op_ra(a, 1, stats);
 		i++;
 	}
 }
@@ -33,7 +46,7 @@ static int	find_max_index(t_stack *b)
 	return (max_idx);
 }
 
-static void	rotate_b_to_top(t_stack *b, int index)
+static void	rotate_b_to_top(t_stack *b, int index, t_stats *stats)
 {
 	int	steps_up;
 	int	steps_down;
@@ -43,28 +56,28 @@ static void	rotate_b_to_top(t_stack *b, int index)
 	if (steps_up <= steps_down)
 	{
 		while (steps_up-- > 0)
-			op_rb(b, 1);
+			op_rb(b, 1, stats);
 	}
 	else
 	{
 		while (steps_down-- > 0)
-			op_rrb(b, 1);
+			op_rrb(b, 1, stats);
 	}
 }
 
-static void	drain_max_to_a(t_stack *a, t_stack *b)
+static void	drain_max_to_a(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	max_idx;
 
 	while (b->size > 0)
 	{
 		max_idx = find_max_index(b);
-		rotate_b_to_top(b, max_idx);
-		op_pa(a, b, 1);
+		rotate_b_to_top(b, max_idx, stats);
+		op_pa(a, b, 1, stats);
 	}
 }
 
-void	sort_medium(t_stack *a, t_stack *b)
+void	sort_medium(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	n;
 	int	*sorted;
@@ -94,8 +107,8 @@ void	sort_medium(t_stack *a, t_stack *b)
 		hi_i = (c + 1) * chunk_size - 1;
 		if (hi_i > n - 1)
 			hi_i = n - 1;
-		sweep_chunk(a, b, sorted[c * chunk_size], sorted[hi_i]);
-		drain_max_to_a(a, b);
+		sweep_chunk(a, b, sorted[c * chunk_size], sorted[hi_i], stats);
+		drain_max_to_a(a, b, stats);
 		c--;
 	}
 	free(sorted);

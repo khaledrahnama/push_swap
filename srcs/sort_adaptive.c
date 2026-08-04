@@ -1,55 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_medium_utils.c                                :+:      :+:    :+:   */
+/*   sort_adaptive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/26 15:37:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:37:58 by khaledrahna      ###   ########.fr       */
+/*   Created: 2026/08/04 14:33:42 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/04 14:42:34 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap.h"
 
-int	int_sqrt(int n)
+int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
 {
-	int	i;
+	int	scaled;
 
-	i = 0;
-	while (i * i < n)
-		i++;
-	return (i);
-}
-
-void	copy_ints(int *dst, int *src, int n)
-{
-	int	i;
-
-	i = 0;
-	while (i < n)
+	scaled = disorder_scaled(a);
+	if (scaled < 2000)
 	{
-		dst[i] = src[i];
-		i++;
+		sort_simple(a, b, stats);
+		return (0);
 	}
-}
-
-void	sort_ints_med(int *arr, int n)
-{
-	int	i;
-	int	j;
-	int	tmp;
-
-	i = 1;
-	while (i < n)
+	else if (scaled < 5000)
 	{
-		j = i;
-		while (j > 0 && arr[j - 1] > arr[j])
-		{
-			tmp = arr[j];
-			arr[j] = arr[j - 1];
-			arr[j - 1] = tmp;
-			j--;
-		}
-		i++;
+		sort_medium(a, b, stats);
+		return (1);
+	}
+	else
+	{
+		sort_complex(a, b, stats);
+		return (2);
 	}
 }

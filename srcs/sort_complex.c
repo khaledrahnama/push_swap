@@ -6,13 +6,13 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 13:32:56 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/28 13:33:25 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/04 14:42:13 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sort_complex(t_stack *a, t_stack *b)
+void	sort_complex(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	*sorted;
 	int	n;
@@ -36,13 +36,13 @@ void	sort_complex(t_stack *a, t_stack *b)
 		{
 			rank = rank_of(a->data[0], sorted, n);
 			if (((rank >> bit) & 1) == 0)
-				op_pb(a, b, 1);
+				op_pb(a, b, 1, stats);
 			else
-				op_ra(a, 1);
+				op_ra(a, 1, stats);
 			i++;
 		}
 		while (b->size > 0)
-			op_pa(a, b, 1);
+			op_pa(a, b, 1, stats);
 		bit++;
 	}
 	free(sorted);
