@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 20:19:27 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:16 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:01:03 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

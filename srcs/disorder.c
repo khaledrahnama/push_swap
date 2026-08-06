@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   disorder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:43:09 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:22 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:01:28 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

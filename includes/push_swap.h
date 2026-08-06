@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 18:20:32 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:18 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:01:12 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

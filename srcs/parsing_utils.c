@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 20:12:31 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:49:56 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:02:06 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_medium.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:32:29 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:49:40 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:02:18 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

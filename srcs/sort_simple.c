@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_simple.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 16:32:27 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:49:37 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:02:20 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

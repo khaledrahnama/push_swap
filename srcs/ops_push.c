@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ops_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 20:13:43 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:03 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:02:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

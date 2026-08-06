@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 12:24:14 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:24 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:01:33 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

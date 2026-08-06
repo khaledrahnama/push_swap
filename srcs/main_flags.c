@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_flags.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 20:17:55 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 23:50:26 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/07 00:01:38 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
