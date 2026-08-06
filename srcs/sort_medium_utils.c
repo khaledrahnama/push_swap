@@ -6,10 +6,9 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 15:37:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:37:58 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 13:47:16 by semirkar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 int	int_sqrt(int n)
 {

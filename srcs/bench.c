@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:45:28 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:45:34 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 13:30:50 by semirkar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static int	total_ops(t_stats *stats)
 {
 	return (stats->sa + stats->sb + stats->ss + stats->pa + stats->pb
-		+ stats->ra + stats->rb + stats->rr
-		+ stats->rra + stats->rrb + stats->rrr);
+		+ stats->ra + stats->rb + stats->rr + stats->rra + stats->rrb
+		+ stats->rrr);
 }
 
 void	print_bench(t_stats *stats, int disorder_val, const char *strat,
