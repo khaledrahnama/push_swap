@@ -1,15 +1,6 @@
 Simple Algorithm :
 
-./push_swap 1 2 3 4
-pb
-pb
-pb
-pb
-pa
-pa
-pa
-pa
-./push_swap 4 3 2 1
+./push_swap --simple 4 3 2 1
 rra
 pb
 rra
@@ -24,16 +15,7 @@ pa
 
 Medium Algorithm :
 
-./push_swap 1 2 3 4
-pb
-pb
-pb
-pb
-pa
-pa
-pa
-pa
-./push_swap 4 3 2 1
+./push_swap --medium 4 3 2 1
 pb
 pb
 pb
@@ -47,3 +29,33 @@ pa
 pa
 
 Complex Algorith :
+
+./push_swap --complex 4 3 2 1 
+ra
+pb
+ra
+pb
+pa
+pa
+ra
+pb
+ra
+pb
+pa
+pa
+
+Adaptive Algorithm:
+
+./push_swap --adaptive 4 3 2 1 
+ra
+pb
+ra
+pb
+pa
+pa
+ra
+pb
+ra
+pb
+pa
+pa
