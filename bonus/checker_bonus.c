@@ -6,59 +6,13 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:35:17 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:50:08 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 20:19:58 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/push_swap.h"
+#include "checker_bonus.h"
 
-static void	error_exit(void)
-{
-	ft_putstr_fd("Error\n", 2);
-	exit(1);
-}
-
-static void	ft_memcpy_local(char *dst, const char *src, int n)
-{
-	int	i;
-
-	i = 0;
-	while (i < n)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-}
-
-static char	*read_stdin(void)
-{
-	char	buf[1024];
-	char	*result;
-	char	*tmp;
-	int		bytes;
-	int		res_len;
-
-	result = malloc(1);
-	result[0] = '\0';
-	res_len = 0;
-	bytes = read(0, buf, 1024);
-	while (bytes > 0)
-	{
-		tmp = malloc(res_len + bytes + 1);
-		if (!tmp)
-			error_exit();
-		ft_memcpy_local(tmp, result, res_len);
-		ft_memcpy_local(tmp + res_len, buf, bytes);
-		tmp[res_len + bytes] = '\0';
-		free(result);
-		result = tmp;
-		res_len += bytes;
-		bytes = read(0, buf, 1024);
-	}
-	return (result);
-}
-
-static void	execute_line(char *line, t_stack *a, t_stack *b)
+static int	execute_basic(char *line, t_stack *a, t_stack *b)
 {
 	if (ft_strequ(line, "sa"))
 		op_sa(a, 0, NULL);
@@ -70,7 +24,16 @@ static void	execute_line(char *line, t_stack *a, t_stack *b)
 		op_pa(a, b, 0, NULL);
 	else if (ft_strequ(line, "pb"))
 		op_pb(a, b, 0, NULL);
-	else if (ft_strequ(line, "ra"))
+	else
+		return (0);
+	return (1);
+}
+
+static void	execute_line(char *line, t_stack *a, t_stack *b)
+{
+	if (execute_basic(line, a, b))
+		return ;
+	if (ft_strequ(line, "ra"))
 		op_ra(a, 0, NULL);
 	else if (ft_strequ(line, "rb"))
 		op_rb(b, 0, NULL);
@@ -108,20 +71,6 @@ static void	process_all_lines(char *input, t_stack *a, t_stack *b)
 		}
 		i++;
 	}
-}
-
-static int	is_sorted(t_stack *a)
-{
-	int	i;
-
-	i = 1;
-	while (i < a->size)
-	{
-		if (a->data[i] < a->data[i - 1])
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int	main(int argc, char **argv)

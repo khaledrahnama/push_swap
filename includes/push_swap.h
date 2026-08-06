@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 18:20:32 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/06 18:20:42 by khaledrahna      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
@@ -26,13 +38,57 @@ typedef struct s_stats
 	int	rrr;
 }	t_stats;
 
+typedef struct s_flags
+{
+	int	simple;
+	int	medium;
+	int	complex;
+	int	bench;
+}	t_flags;
+
+typedef struct s_run_ctx
+{
+	t_stack		*a;
+	t_stack		*b;
+	t_stats		*stats;
+	int			disorder;
+	const char	*name;
+	const char	*complexity;
+}	t_run_ctx;
+
+typedef struct s_chunk
+{
+	int	min;
+	int	max;
+}	t_chunk;
+
+typedef struct s_chunk_plan
+{
+	int	*sorted;
+	int	n;
+	int	chunk_size;
+	int	num_chunks;
+}	t_chunk_plan;
+
+typedef struct s_radix_ctx
+{
+	int		*sorted;
+	int		n;
+	t_stats	*stats;
+}	t_radix_ctx;
+
 int		main(int argc, char **argv);
 
 void	stack_init(t_stack *stack, int capacity);
 void	stack_free(t_stack *stack);
 void	stack_print(t_stack *stack, char name);
 
+void	error_exit(void);
+char	*join_args(int argc, char **argv);
+long	parse_number(char *str, int *idx);
+int		already_seen(t_stack *a, int value);
 void	parse_args(int argc, char **argv, t_stack *a);
+void	init_and_parse(int argc, char **argv, t_flags *flags, t_stack *a);
 
 int		ft_isdigit(char c);
 int		ft_strlen(const char *s);
@@ -60,6 +116,8 @@ int		sort_adaptive(t_stack *a, t_stack *b, t_stats *stats);
 int		int_sqrt(int n);
 void	copy_ints(int *dst, int *src, int n);
 void	sort_ints_med(int *arr, int n);
+void	build_chunk_plan(t_stack *a, t_chunk_plan *plan);
+void	get_chunk_bounds(t_chunk_plan *plan, int c, t_chunk *chunk);
 
 int		*build_sorted_copy(t_stack *a);
 int		rank_of(int value, int *sorted, int n);

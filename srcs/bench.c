@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:45:28 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 13:30:50 by semirkar         ###   ########.fr       */
+/*   Updated: 2026/08/06 20:17:07 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static int	total_ops(t_stats *stats)
 {
 	return (stats->sa + stats->sb + stats->ss + stats->pa + stats->pb
-		+ stats->ra + stats->rb + stats->rr + stats->rra + stats->rrb
-		+ stats->rrr);
+		+ stats->ra + stats->rb + stats->rr
+		+ stats->rra + stats->rrb + stats->rrr);
 }
 
-void	print_bench(t_stats *stats, int disorder_val, const char *strat,
+static void	print_bench_header(int disorder_val, const char *strat,
 		const char *complexity)
 {
 	ft_putstr_fd("[bench] disorder: ", 2);
@@ -28,9 +28,12 @@ void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 	ft_putstr_fd(strat, 2);
 	ft_putstr_fd(" / ", 2);
 	ft_putstr_fd(complexity, 2);
-	ft_putstr_fd("\n[bench] total_ops: ", 2);
-	ft_putnbr_fd(total_ops(stats), 2);
-	ft_putstr_fd("\n[bench] sa: ", 2);
+	ft_putstr_fd("\n", 2);
+}
+
+static void	print_bench_counts1(t_stats *stats)
+{
+	ft_putstr_fd("[bench] sa: ", 2);
 	ft_putnbr_fd(stats->sa, 2);
 	ft_putstr_fd(" sb: ", 2);
 	ft_putnbr_fd(stats->sb, 2);
@@ -40,7 +43,12 @@ void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 	ft_putnbr_fd(stats->pa, 2);
 	ft_putstr_fd(" pb: ", 2);
 	ft_putnbr_fd(stats->pb, 2);
-	ft_putstr_fd("\n[bench] ra: ", 2);
+	ft_putstr_fd("\n", 2);
+}
+
+static void	print_bench_counts2(t_stats *stats)
+{
+	ft_putstr_fd("[bench] ra: ", 2);
 	ft_putnbr_fd(stats->ra, 2);
 	ft_putstr_fd(" rb: ", 2);
 	ft_putnbr_fd(stats->rb, 2);
@@ -53,4 +61,15 @@ void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 	ft_putstr_fd(" rrr: ", 2);
 	ft_putnbr_fd(stats->rrr, 2);
 	ft_putstr_fd("\n", 2);
+}
+
+void	print_bench(t_stats *stats, int disorder_val, const char *strat,
+		const char *complexity)
+{
+	print_bench_header(disorder_val, strat, complexity);
+	ft_putstr_fd("[bench] total_ops: ", 2);
+	ft_putnbr_fd(total_ops(stats), 2);
+	ft_putstr_fd("\n", 2);
+	print_bench_counts1(stats);
+	print_bench_counts2(stats);
 }

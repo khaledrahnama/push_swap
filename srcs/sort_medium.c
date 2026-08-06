@@ -6,13 +6,13 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 14:32:29 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 13:46:25 by semirkar         ###   ########.fr       */
+/*   Updated: 2026/08/06 20:15:27 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax,
+static void	sweep_chunk(t_stack *a, t_stack *b, t_chunk *chunk,
 		t_stats *stats)
 {
 	int	sweep_count;
@@ -22,7 +22,7 @@ static void	sweep_chunk(t_stack *a, t_stack *b, int cmin, int cmax,
 	i = 0;
 	while (i < sweep_count)
 	{
-		if (a->data[0] >= cmin && a->data[0] <= cmax)
+		if (a->data[0] >= chunk->min && a->data[0] <= chunk->max)
 			op_pb(a, b, 1, stats);
 		else
 			op_ra(a, 1, stats);
@@ -79,37 +79,20 @@ static void	drain_max_to_a(t_stack *a, t_stack *b, t_stats *stats)
 
 void	sort_medium(t_stack *a, t_stack *b, t_stats *stats)
 {
-	int	n;
-	int	*sorted;
-	int	chunk_size;
-	int	num_chunks;
-	int	c;
-	int	hi_i;
+	t_chunk_plan	plan;
+	t_chunk			chunk;
+	int				c;
 
-	n = a->size;
-	if (n < 2)
+	if (a->size < 2)
 		return ;
-	sorted = malloc(sizeof(int) * n);
-	if (!sorted)
-	{
-		ft_putstr_fd("Error\n", 2);
-		exit(1);
-	}
-	copy_ints(sorted, a->data, n);
-	sort_ints_med(sorted, n);
-	chunk_size = (int_sqrt(n) * 5) / 2;
-	if (chunk_size < 1)
-		chunk_size = 1;
-	num_chunks = (n + chunk_size - 1) / chunk_size;
-	c = num_chunks - 1;
+	build_chunk_plan(a, &plan);
+	c = plan.num_chunks - 1;
 	while (c >= 0)
 	{
-		hi_i = (c + 1) * chunk_size - 1;
-		if (hi_i > n - 1)
-			hi_i = n - 1;
-		sweep_chunk(a, b, sorted[c * chunk_size], sorted[hi_i], stats);
+		get_chunk_bounds(&plan, c, &chunk);
+		sweep_chunk(a, b, &chunk, stats);
 		drain_max_to_a(a, b, stats);
 		c--;
 	}
-	free(sorted);
+	free(plan.sorted);
 }

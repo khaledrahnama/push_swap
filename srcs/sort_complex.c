@@ -6,44 +6,50 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 13:32:56 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:42:13 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 20:16:04 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sort_complex(t_stack *a, t_stack *b, t_stats *stats)
+static void	sweep_by_bit(t_stack *a, t_stack *b, t_radix_ctx *ctx, int bit)
 {
-	int	*sorted;
-	int	n;
-	int	nbits;
-	int	bit;
 	int	count;
 	int	i;
 	int	rank;
 
+	count = a->size;
+	i = 0;
+	while (i < count)
+	{
+		rank = rank_of(a->data[0], ctx->sorted, ctx->n);
+		if (((rank >> bit) & 1) == 0)
+			op_pb(a, b, 1, ctx->stats);
+		else
+			op_ra(a, 1, ctx->stats);
+		i++;
+	}
+	while (b->size > 0)
+		op_pa(a, b, 1, ctx->stats);
+}
+
+void	sort_complex(t_stack *a, t_stack *b, t_stats *stats)
+{
+	t_radix_ctx	ctx;
+	int			nbits;
+	int			bit;
+
 	if (a->size < 2)
 		return ;
-	n = a->size;
-	sorted = build_sorted_copy(a);
-	nbits = nbits_for(n);
+	ctx.n = a->size;
+	ctx.sorted = build_sorted_copy(a);
+	ctx.stats = stats;
+	nbits = nbits_for(ctx.n);
 	bit = 0;
 	while (bit < nbits)
 	{
-		count = a->size;
-		i = 0;
-		while (i < count)
-		{
-			rank = rank_of(a->data[0], sorted, n);
-			if (((rank >> bit) & 1) == 0)
-				op_pb(a, b, 1, stats);
-			else
-				op_ra(a, 1, stats);
-			i++;
-		}
-		while (b->size > 0)
-			op_pa(a, b, 1, stats);
+		sweep_by_bit(a, b, &ctx, bit);
 		bit++;
 	}
-	free(sorted);
+	free(ctx.sorted);
 }

@@ -1,0 +1,91 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 20:12:31 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/06 20:12:33 by khaledrahna      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
+
+void	error_exit(void)
+{
+	ft_putstr_fd("Error\n", 2);
+	exit(1);
+}
+
+char	*join_args(int argc, char **argv)
+{
+	char	*joined;
+	int		total_len;
+	int		i;
+	int		pos;
+	int		j;
+
+	total_len = 0;
+	i = 1;
+	while (i < argc)
+		total_len += ft_strlen(argv[i++]) + 1;
+	joined = malloc(sizeof(char) * (total_len + 1));
+	if (!joined)
+		error_exit();
+	pos = 0;
+	i = 1;
+	while (i < argc)
+	{
+		j = 0;
+		while (argv[i][j])
+			joined[pos++] = argv[i][j++];
+		joined[pos++] = ' ';
+		i++;
+	}
+	joined[pos] = '\0';
+	return (joined);
+}
+
+long	parse_number(char *str, int *idx)
+{
+	long	value;
+	int		sign;
+	int		has_digit;
+
+	sign = 1;
+	value = 0;
+	has_digit = 0;
+	if (str[*idx] == '-' || str[*idx] == '+')
+	{
+		if (str[*idx] == '-')
+			sign = -1;
+		(*idx)++;
+	}
+	while (ft_isdigit(str[*idx]))
+	{
+		value = value * 10 + (str[*idx] - '0');
+		if ((sign == 1 && value > INT_MAX)
+			|| (sign == -1 && value > (long)INT_MAX + 1))
+			error_exit();
+		has_digit = 1;
+		(*idx)++;
+	}
+	if (!has_digit)
+		error_exit();
+	return (value * sign);
+}
+
+int	already_seen(t_stack *a, int value)
+{
+	int	i;
+
+	i = 0;
+	while (i < a->size)
+	{
+		if (a->data[i] == value)
+			return (1);
+		i++;
+	}
+	return (0);
+}

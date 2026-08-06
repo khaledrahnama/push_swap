@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_adaptive.c                                    :+:      :+:    :+:   */
+/*   checker_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 14:33:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 20:16:41 by khaledrahna      ###   ########.fr       */
+/*   Created: 2026/08/06 20:19:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/06 20:19:06 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#ifndef CHECKER_BONUS_H
+# define CHECKER_BONUS_H
 
-int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
-{
-	int	scaled;
+# include "../includes/push_swap.h"
 
-	scaled = disorder_scaled(a);
-	if (scaled < 2000)
-	{
-		sort_simple(a, b, stats);
-		return (0);
-	}
-	else if (scaled < 5000)
-	{
-		sort_medium(a, b, stats);
-		return (1);
-	}
-	else
-	{
-		sort_complex(a, b, stats);
-		return (2);
-	}
-}
+char	*read_stdin(void);
+int		is_sorted(t_stack *a);
+
+#endif

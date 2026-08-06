@@ -6,95 +6,27 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 12:34:54 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/04 14:37:47 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 20:12:51 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
 
-static void	error_exit(void)
+static void	parse_one_number(char *joined, int *idx, t_stack *a)
 {
-	ft_putstr_fd("Error\n", 2);
-	exit(1);
-}
+	int	value;
 
-static char	*join_args(int argc, char **argv)
-{
-	char	*joined;
-	int		total_len;
-	int		i;
-	int		pos;
-	int		j;
-
-	total_len = 0;
-	i = 1;
-	while (i < argc)
-		total_len += ft_strlen(argv[i++]) + 1;
-	joined = malloc(sizeof(char) * (total_len + 1));
-	if (!joined)
+	value = (int)parse_number(joined, idx);
+	if (joined[*idx] != ' ' && joined[*idx] != '\0')
 		error_exit();
-	pos = 0;
-	i = 1;
-	while (i < argc)
-	{
-		j = 0;
-		while (argv[i][j])
-			joined[pos++] = argv[i][j++];
-		joined[pos++] = ' ';
-		i++;
-	}
-	joined[pos] = '\0';
-	return (joined);
-}
-
-static long	parse_number(char *str, int *idx)
-{
-	long	value;
-	int		sign;
-	int		has_digit;
-
-	sign = 1;
-	value = 0;
-	has_digit = 0;
-	if (str[*idx] == '-' || str[*idx] == '+')
-	{
-		if (str[*idx] == '-')
-			sign = -1;
-		(*idx)++;
-	}
-	while (ft_isdigit(str[*idx]))
-	{
-		value = value * 10 + (str[*idx] - '0');
-		if ((sign == 1 && value > INT_MAX)
-			|| (sign == -1 && value > (long)INT_MAX + 1))
-			error_exit();
-		has_digit = 1;
-		(*idx)++;
-	}
-	if (!has_digit)
+	if (already_seen(a, value))
 		error_exit();
-	return (value * sign);
-}
-
-static int	already_seen(t_stack *a, int value)
-{
-	int	i;
-
-	i = 0;
-	while (i < a->size)
-	{
-		if (a->data[i] == value)
-			return (1);
-		i++;
-	}
-	return (0);
+	a->data[a->size++] = value;
 }
 
 void	parse_args(int argc, char **argv, t_stack *a)
 {
 	char	*joined;
 	int		i;
-	int		value;
 
 	if (argc < 2)
 	{
@@ -110,12 +42,7 @@ void	parse_args(int argc, char **argv, t_stack *a)
 			i++;
 		if (!joined[i])
 			break ;
-		value = (int)parse_number(joined, &i);
-		if (joined[i] != ' ' && joined[i] != '\0')
-			error_exit();
-		if (already_seen(a, value))
-			error_exit();
-		a->data[a->size++] = value;
+		parse_one_number(joined, &i, a);
 	}
 	free(joined);
 }

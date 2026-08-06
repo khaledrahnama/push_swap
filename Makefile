@@ -11,10 +11,10 @@ BONUS_DIR	= bonus
 
 vpath %.c srcs bonus
 
-SRCS = main.c stack_utils.c parsing.c ft_utils.c operations.c sort_simple.c sort_medium.c sort_medium_utils.c sort_complex.c sort_complex_utils.c disorder.c sort_adaptive.c bench.c
+SRCS = main.c main_flags.c stack_utils.c parsing.c parsing_utils.c ft_utils.c ops_swap.c ops_push.c ops_rotate.c ops_rrotate.c sort_simple.c sort_medium.c sort_medium_utils.c sort_complex.c sort_complex_utils.c disorder.c sort_adaptive.c bench.c
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
-BONUS_SRCS = checker_bonus.c stack_utils.c parsing.c ft_utils.c operations.c
+BONUS_SRCS = checker_bonus.c checker_utils_bonus.c stack_utils.c parsing.c parsing_utils.c ft_utils.c ops_swap.c ops_push.c ops_rotate.c ops_rrotate.c
 BONUS_OBJS = $(addprefix $(OBJS_DIR)/, $(BONUS_SRCS:.c=.o))
 
 all: $(NAME)
