@@ -6,10 +6,11 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/19 12:34:54 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 20:12:51 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 20:24:25 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap.h"
 
 static void	parse_one_number(char *joined, int *idx, t_stack *a)
 {

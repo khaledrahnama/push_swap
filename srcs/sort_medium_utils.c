@@ -6,10 +6,11 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 15:37:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/06 20:15:08 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/06 20:25:05 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap.h"
 
 int	int_sqrt(int n)
 {
