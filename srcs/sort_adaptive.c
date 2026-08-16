@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_adaptive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
+/*   Created: 2026/08/16 16:40:45 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/16 16:40:51 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static void	sort_tiny(t_stack *a, t_stats *stats)
 	else if (a->data[1] < a->data[0] && a->data[0] < a->data[2])
 		op_sa(a, 1, stats);
 	else if (a->data[1] < a->data[2] && a->data[2] < a->data[0])
-		op_rra(a, 1, stats);
-	else if (a->data[2] < a->data[0] && a->data[0] < a->data[1])
 		op_ra(a, 1, stats);
+	else if (a->data[2] < a->data[0] && a->data[0] < a->data[1])
+		op_rra(a, 1, stats);
 	else
 	{
 		op_sa(a, 1, stats);
