@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bench.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/16 16:25:10 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
