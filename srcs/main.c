@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: semirkar <semirkar@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 13:47:01 by semirkar          #+#    #+#             */
-/*   Updated: 2026/08/16 13:47:12 by semirkar         ###   ########.fr       */
-=======
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
->>>>>>> cc4c66d7702098591422b1152bf4247be857ef0c
+/*   Created: 2026/08/16 15:40:37 by semirkar          #+#    #+#             */
+/*   Updated: 2026/08/16 15:40:45 by semirkar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
