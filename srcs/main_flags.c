@@ -37,6 +37,7 @@ static char	**filter_flags(int argc, char **argv, int *out_argc,
 	char	**filtered;
 	int		fcount;
 	int		i;
+	int		flag_zone;
 
 	filtered = malloc(sizeof(char *) * (argc + 1));
 	if (!filtered)
@@ -44,10 +45,14 @@ static char	**filter_flags(int argc, char **argv, int *out_argc,
 	fcount = 0;
 	filtered[fcount++] = argv[0];
 	i = 1;
+	flag_zone = 1;
 	while (i < argc)
 	{
-		if (!match_flag(argv[i], flags))
+		if (!(flag_zone && match_flag(argv[i], flags)))
+		{
 			filtered[fcount++] = argv[i];
+			flag_zone = 0;
+		}
 		i++;
 	}
 	*out_argc = fcount;
