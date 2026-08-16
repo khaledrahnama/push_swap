@@ -1,4 +1,4 @@
-_This activity has been created as part of the 42 curriculum by krahnama, semirkar._
+*This activity has been created as part of the 42 curriculum by krahnama, semirkar.*
 
 # push_swap
 

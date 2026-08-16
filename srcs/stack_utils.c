@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
+/*   Created: 2026/08/16 17:16:13 by krahnama          #+#    #+#             */
+/*   Updated: 2026/08/16 17:16:17 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
