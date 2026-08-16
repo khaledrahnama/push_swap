@@ -213,5 +213,7 @@ Both of us went through the code together and can explain any part of it.
 ## Contributions
 
 - **krahnama**:
+  stack operations , medium and complex algorithm , debugging
 
 - **semirkar**:
+  parsing, simple and adaptive algorithm, debugging
