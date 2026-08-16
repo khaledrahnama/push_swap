@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: semirkar <semirkar@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/18 11:54:11 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:01:51 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 13:47:01 by semirkar          #+#    #+#             */
+/*   Updated: 2026/08/16 13:47:12 by semirkar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,18 @@ int	main(int argc, char **argv)
 	stack_init(&b, a.size);
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	ctx = (t_run_ctx){&a, &b, &stats, disorder_scaled(&a), "", ""};
+	if (ctx.disorder == 0)
+	{
+		if (flags.bench == 1)
+			print_bench(&ctx);
+		stack_free(&a);
+		stack_free(&b);		
+		return (0);
+	}
+	
 	run_strategy(&flags, &ctx);
 	if (flags.bench)
-		print_bench(ctx.stats, ctx.disorder, ctx.name, ctx.complexity);
+		print_bench(&ctx);
 	stack_free(&a);
 	stack_free(&b);
 	return (0);

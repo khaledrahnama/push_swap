@@ -63,13 +63,12 @@ static void	print_bench_counts2(t_stats *stats)
 	ft_putstr_fd("\n", 2);
 }
 
-void	print_bench(t_stats *stats, int disorder_val, const char *strat,
-		const char *complexity)
+void	print_bench(t_run_ctx *ctx)
 {
-	print_bench_header(disorder_val, strat, complexity);
+	print_bench_header(ctx->disorder, ctx->name, ctx->complexity);
 	ft_putstr_fd("[bench] total_ops: ", 2);
-	ft_putnbr_fd(total_ops(stats), 2);
+	ft_putnbr_fd(total_ops(ctx->stats), 2);
 	ft_putstr_fd("\n", 2);
-	print_bench_counts1(stats);
-	print_bench_counts2(stats);
+	print_bench_counts1(ctx->stats);
+	print_bench_counts2(ctx->stats);
 }
