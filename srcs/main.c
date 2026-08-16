@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/16 16:25:00 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/16 17:09:21 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	flags = (t_flags){0, 0, 0, 0};
+	flags = (t_flags){0, 0, 0, 0, 0};
 	init_and_parse(argc, argv, &flags, &a);
 	stack_init(&b, a.size);
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

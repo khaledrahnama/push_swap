@@ -6,7 +6,7 @@
 /*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/16 15:42:26 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/16 17:09:09 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	match_flag(char *arg, t_flags *flags)
 	else if (ft_strequ(arg, "--complex"))
 		flags->complex = 1;
 	else if (ft_strequ(arg, "--adaptive"))
-		return (1);
+		flags->adaptive = 1;
 	else if (ft_strequ(arg, "--bench"))
 		flags->bench = 1;
 	else
@@ -57,12 +57,22 @@ static char	**filter_flags(int argc, char **argv, int *out_argc,
 	return (filtered);
 }
 
+static void	check_flag_conflict(t_flags *flags)
+{
+	int	count;
+
+	count = flags->simple + flags->medium + flags->complex + flags->adaptive;
+	if (count > 1)
+		error_exit();
+}
+
 void	init_and_parse(int argc, char **argv, t_flags *flags, t_stack *a)
 {
 	char	**filtered;
 	int		filtered_argc;
 
 	filtered = filter_flags(argc, argv, &filtered_argc, flags);
+	check_flag_conflict(flags);
 	if (filtered_argc < 2)
 	{
 		free(filtered);
