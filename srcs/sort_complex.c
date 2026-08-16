@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_complex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/28 13:32:56 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:02:16 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

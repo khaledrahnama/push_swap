@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_flags.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/06 20:17:55 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:01:38 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	match_flag(char *arg, t_flags *flags)
 		return (1);
 	else if (ft_strequ(arg, "--bench"))
 		flags->bench = 1;
+	else if (ft_strequ(arg, "--count-only"))
+		flags->count_only = 1;
 	else
 		return (0);
 	return (1);
@@ -35,6 +37,7 @@ static char	**filter_flags(int argc, char **argv, int *out_argc,
 	char	**filtered;
 	int		fcount;
 	int		i;
+	int		flag_zone;
 
 	filtered = malloc(sizeof(char *) * (argc + 1));
 	if (!filtered)
@@ -42,10 +45,14 @@ static char	**filter_flags(int argc, char **argv, int *out_argc,
 	fcount = 0;
 	filtered[fcount++] = argv[0];
 	i = 1;
+	flag_zone = 1;
 	while (i < argc)
 	{
-		if (!match_flag(argv[i], flags))
+		if (!(flag_zone && match_flag(argv[i], flags)))
+		{
 			filtered[fcount++] = argv[i];
+			flag_zone = 0;
+		}
 		i++;
 	}
 	*out_argc = fcount;

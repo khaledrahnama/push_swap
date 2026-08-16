@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/06 18:20:32 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:01:12 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_stats
 	int	rra;
 	int	rrb;
 	int	rrr;
+	int	suppress_print;
 }	t_stats;
 
 typedef struct s_flags
@@ -44,6 +45,7 @@ typedef struct s_flags
 	int	medium;
 	int	complex;
 	int	bench;
+	int	count_only;
 }	t_flags;
 
 typedef struct s_run_ctx
@@ -130,5 +132,6 @@ void	print_disorder_pct(int scaled, int fd);
 
 void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 			const char *complexity);
+int		count_total_ops(t_stats *stats);
 
 #endif
