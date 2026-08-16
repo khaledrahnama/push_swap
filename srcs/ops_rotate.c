@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ops_rotate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/06 20:14:08 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:02:01 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	op_ra(t_stack *a, int print, t_stats *stats)
 		}
 		a->data[a->size - 1] = first;
 	}
-	if (print)
+	if (print && !(stats && stats->suppress_print))
 		ft_putstr_fd("ra\n", 1);
 	if (stats)
 		stats->ra++;
@@ -50,7 +50,7 @@ void	op_rb(t_stack *b, int print, t_stats *stats)
 		}
 		b->data[b->size - 1] = first;
 	}
-	if (print)
+	if (print && !(stats && stats->suppress_print))
 		ft_putstr_fd("rb\n", 1);
 	if (stats)
 		stats->rb++;
@@ -60,7 +60,7 @@ void	op_rr(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
 	op_ra(a, 0, NULL);
 	op_rb(b, 0, NULL);
-	if (print)
+	if (print && !(stats && stats->suppress_print))
 		ft_putstr_fd("rr\n", 1);
 	if (stats)
 		stats->rr++;

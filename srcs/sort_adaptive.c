@@ -3,19 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   sort_adaptive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 14:33:42 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:02:12 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+#define ADAPTIVE_SMALL_N 10
+
+static void	sort_tiny(t_stack *a, t_stats *stats)
+{
+	if (a->size == 2)
+	{
+		if (a->data[0] > a->data[1])
+			op_sa(a, 1, stats);
+		return ;
+	}
+	if (a->data[0] < a->data[2] && a->data[2] < a->data[1])
+	{
+		op_sa(a, 1, stats);
+		op_ra(a, 1, stats);
+	}
+	else if (a->data[1] < a->data[0] && a->data[0] < a->data[2])
+		op_sa(a, 1, stats);
+	else if (a->data[1] < a->data[2] && a->data[2] < a->data[0])
+		op_rra(a, 1, stats);
+	else if (a->data[2] < a->data[0] && a->data[0] < a->data[1])
+		op_ra(a, 1, stats);
+	else
+	{
+		op_sa(a, 1, stats);
+		op_rra(a, 1, stats);
+	}
+}
+
+static int	sort_by_size(t_stack *a, t_stack *b, t_stats *stats)
+{
+	if (a->size <= 3)
+	{
+		sort_tiny(a, stats);
+		return (1);
+	}
+	if (a->size <= ADAPTIVE_SMALL_N)
+	{
+		sort_simple(a, b, stats);
+		return (1);
+	}
+	return (0);
+}
+
 int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	scaled;
 
+	if (sort_by_size(a, b, stats))
+		return (0);
 	scaled = disorder_scaled(a);
 	if (scaled < 2000)
 	{

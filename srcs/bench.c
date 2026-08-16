@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bench.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 14:45:28 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:01:22 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	total_ops(t_stats *stats)
+int	count_total_ops(t_stats *stats)
 {
 	return (stats->sa + stats->sb + stats->ss + stats->pa + stats->pb
 		+ stats->ra + stats->rb + stats->rr
@@ -68,7 +68,7 @@ void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 {
 	print_bench_header(disorder_val, strat, complexity);
 	ft_putstr_fd("[bench] total_ops: ", 2);
-	ft_putnbr_fd(total_ops(stats), 2);
+	ft_putnbr_fd(count_total_ops(stats), 2);
 	ft_putstr_fd("\n", 2);
 	print_bench_counts1(stats);
 	print_bench_counts2(stats);

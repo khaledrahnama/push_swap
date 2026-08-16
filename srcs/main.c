@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/18 11:54:11 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/07 00:01:51 by krahnama         ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
+/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,18 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	flags = (t_flags){0, 0, 0, 0};
+	flags = (t_flags){0, 0, 0, 0, 0};
 	init_and_parse(argc, argv, &flags, &a);
 	stack_init(&b, a.size);
-	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	ctx = (t_run_ctx){&a, &b, &stats, disorder_scaled(&a), "", ""};
-	run_strategy(&flags, &ctx);
+	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, flags.count_only};
+	ctx = (t_run_ctx){&a, &b, &stats, disorder_scaled(&a), "None", "O(1)"};
+	if (ctx.disorder != 0)
+		run_strategy(&flags, &ctx);
+	if (flags.count_only)
+	{
+		ft_putnbr_fd(count_total_ops(ctx.stats), 1);
+		ft_putstr_fd("\n", 1);
+	}
 	if (flags.bench)
 		print_bench(ctx.stats, ctx.disorder, ctx.name, ctx.complexity);
 	stack_free(&a);
