@@ -34,7 +34,7 @@ void	op_pa(t_stack *a, t_stack *b, int print, t_stats *stats)
 		}
 		b->size--;
 	}
-	if (print && !(stats && stats->suppress_print))
+	if (print)
 		ft_putstr_fd("pa\n", 1);
 	if (stats)
 		stats->pa++;
@@ -62,7 +62,7 @@ void	op_pb(t_stack *a, t_stack *b, int print, t_stats *stats)
 		}
 		a->size--;
 	}
-	if (print && !(stats && stats->suppress_print))
+	if (print)
 		ft_putstr_fd("pb\n", 1);
 	if (stats)
 		stats->pb++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_flags.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
+/*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/16 15:42:26 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static int	match_flag(char *arg, t_flags *flags)
 		return (1);
 	else if (ft_strequ(arg, "--bench"))
 		flags->bench = 1;
-	else if (ft_strequ(arg, "--count-only"))
-		flags->count_only = 1;
 	else
 		return (0);
 	return (1);

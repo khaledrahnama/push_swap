@@ -1,4 +1,4 @@
-_This activity has been created as part of the 42 curriculum by krahnama, semirkar_
+_This activity has been created as part of the 42 curriculum by krahnama, semirkar._
 
 # push_swap
 
@@ -18,8 +18,8 @@ complexity classes (O(n²), O(n·√n), O(n·log n)), a way to measure how
 "disordered" the input is, and an adaptive mode that picks whichever
 strategy fits best based on that measurement.
 
-There's also a bonus `checker` program that takes a stack and a list of
-operations and tells you whether those operations actually sort it.
+We're not submitting the bonus part (checker) for this one — just the
+mandatory push_swap.
 
 ## Instructions
 
@@ -27,42 +27,35 @@ operations and tells you whether those operations actually sort it.
 
 ```bash
 make          # builds push_swap
-make bonus    # builds checker, separately (on purpose, see note below)
 ```
 
-`make bonus` is a separate target because the subject requires it — the
-mandatory and bonus parts get graded independently, so `checker` should
-never be built by a plain `make`.
-
-Both binaries compile clean with `-Wall -Wextra -Werror`. We don't use
+The binary compiles clean with `-Wall -Wextra -Werror`. We don't use
 `printf`, `strtok`, `atoi`, or anything like that — only `read`, `write`,
 `malloc`, `free`, `exit`. Everything else (number parsing, string helpers,
 etc.) is written from scratch in `ft_utils.c`.
 
 ```bash
 make clean    # remove .o files
-make fclean   # remove .o files and the binaries
+make fclean   # remove .o files and the binary
 make re       # fclean, then all
 ```
 
 ### Running it
 
 ```bash
-./push_swap [--simple|--medium|--complex|--adaptive] [--bench] [--count-only] <numbers>
+./push_swap [--simple|--medium|--complex|--adaptive] [--bench] <numbers>
 ```
 
 You can pass the numbers as separate arguments or as one quoted string,
 either works. If you don't pass a strategy flag it defaults to
-`--adaptive`.
+`--adaptive`. Flags have to come before the numbers — once the first
+number shows up, anything after that is treated as stack data, even if
+it looks like a flag.
 
 `--bench` prints some stats to stderr after sorting — the disorder
 percentage, which strategy got used, total operations, and a breakdown by
 operation type. It doesn't touch stdout, so you can still pipe the actual
 sort operations somewhere while watching the bench output separately.
-
-`--count-only` skips printing the operations one by one and just prints
-how many there were. Example: `./push_swap --count-only 3 2 1` prints a
-single number instead of a list of moves.
 
 A few examples:
 
@@ -72,18 +65,6 @@ A few examples:
 ./push_swap --simple 5 4 3 2 1
 ./push_swap --bench --adaptive $(python3 -c "import random; print(' '.join(map(str, random.sample(range(-500,500),100))))")
 ```
-
-### checker (bonus)
-
-```bash
-./push_swap 3 2 1 0 | ./checker 3 2 1 0
-# OK
-```
-
-It reads the stack the same way push_swap does, then reads operations
-from stdin (one per line) and applies them. If the result is sorted and
-`b` ends up empty, it prints `OK`. Otherwise `KO`. Bad arguments or a
-garbage instruction print `Error` to stderr instead.
 
 ## The algorithms
 
@@ -223,14 +204,14 @@ We used Claude throughout this project, mostly for:
   kind of thing).
 
 Everything got tested before we trusted it — exhaustive checks on small
-inputs, random stress tests, and cross-checking against our checker —
-not just taken on faith because the AI said it should work.
+inputs, random stress tests, and an independent Python script that
+replays the operations and checks the result — not just taken on faith
+because the AI said it should work.
 
 Both of us went through the code together and can explain any part of it.
 
 ## Contributions
 
 - **krahnama**:
-  the stack operations, complex algorithms
+
 - **semirkar**:
-  debugging, simple , main, parsing , Makefile , norminette

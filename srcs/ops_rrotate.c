@@ -28,7 +28,7 @@ void	op_rra(t_stack *a, int print, t_stats *stats)
 		}
 		a->data[0] = last;
 	}
-	if (print && !(stats && stats->suppress_print))
+	if (print)
 		ft_putstr_fd("rra\n", 1);
 	if (stats)
 		stats->rra++;
@@ -50,7 +50,7 @@ void	op_rrb(t_stack *b, int print, t_stats *stats)
 		}
 		b->data[0] = last;
 	}
-	if (print && !(stats && stats->suppress_print))
+	if (print)
 		ft_putstr_fd("rrb\n", 1);
 	if (stats)
 		stats->rrb++;
@@ -60,7 +60,7 @@ void	op_rrr(t_stack *a, t_stack *b, int print, t_stats *stats)
 {
 	op_rra(a, 0, NULL);
 	op_rrb(b, 0, NULL);
-	if (print && !(stats && stats->suppress_print))
+	if (print)
 		ft_putstr_fd("rrr\n", 1);
 	if (stats)
 		stats->rrr++;
