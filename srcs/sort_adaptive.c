@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_adaptive.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: semirkar <semirkar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 16:40:45 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/16 16:40:51 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/21 11:54:07 by semirkar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
