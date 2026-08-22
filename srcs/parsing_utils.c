@@ -12,27 +12,36 @@
 
 #include "push_swap.h"
 
-void	error_exit(void)
+void	print_error(void)
 {
 	ft_putstr_fd("Error\n", 2);
-	exit(1);
 }
 
-char	*join_args(int argc, char **argv)
+static int	total_len_of(int argc, char **argv)
 {
-	char	*joined;
-	int		total_len;
-	int		i;
-	int		pos;
-	int		j;
+	int	total_len;
+	int	i;
 
 	total_len = 0;
 	i = 1;
 	while (i < argc)
 		total_len += ft_strlen(argv[i++]) + 1;
-	joined = malloc(sizeof(char) * (total_len + 1));
+	return (total_len);
+}
+
+char	*join_args(int argc, char **argv)
+{
+	char	*joined;
+	int		i;
+	int		pos;
+	int		j;
+
+	joined = malloc(sizeof(char) * (total_len_of(argc, argv) + 1));
 	if (!joined)
-		error_exit();
+	{
+		print_error();
+		return (NULL);
+	}
 	pos = 0;
 	i = 1;
 	while (i < argc)
@@ -47,45 +56,42 @@ char	*join_args(int argc, char **argv)
 	return (joined);
 }
 
-long	parse_number(char *str, int *idx)
+static int	parse_sign(char *str, int *idx)
 {
-	long	value;
-	int		sign;
-	int		has_digit;
+	int	sign;
 
 	sign = 1;
-	value = 0;
-	has_digit = 0;
 	if (str[*idx] == '-' || str[*idx] == '+')
 	{
 		if (str[*idx] == '-')
 			sign = -1;
 		(*idx)++;
 	}
+	return (sign);
+}
+
+long	parse_number(char *str, int *idx, int *ok)
+{
+	long	value;
+	int		sign;
+
+	value = 0;
+	*ok = 0;
+	sign = parse_sign(str, idx);
 	while (ft_isdigit(str[*idx]))
 	{
 		value = value * 10 + (str[*idx] - '0');
 		if ((sign == 1 && value > INT_MAX)
 			|| (sign == -1 && value > (long)INT_MAX + 1))
-			error_exit();
-		has_digit = 1;
+		{
+			*ok = 0;
+			print_error();
+			return (0);
+		}
+		*ok = 1;
 		(*idx)++;
 	}
-	if (!has_digit)
-		error_exit();
+	if (!*ok)
+		print_error();
 	return (value * sign);
-}
-
-int	already_seen(t_stack *a, int value)
-{
-	int	i;
-
-	i = 0;
-	while (i < a->size)
-	{
-		if (a->data[i] == value)
-			return (1);
-		i++;
-	}
-	return (0);
 }
