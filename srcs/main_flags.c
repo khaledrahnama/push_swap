@@ -3,31 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   main_flags.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/16 17:09:09 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/08/22 12:32:14 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+static void set_flags_once(int *field)
+{
+	if(*field)
+		error_exit();
+	*field = 1;
+}
+
 static int	match_flag(char *arg, t_flags *flags)
 {
 	if (ft_strequ(arg, "--simple"))
-		flags->simple = 1;
+		set_flags_once(&flags->simple);
 	else if (ft_strequ(arg, "--medium"))
-		flags->medium = 1;
+		set_flags_once(&flags->medium);
 	else if (ft_strequ(arg, "--complex"))
-		flags->complex = 1;
+		set_flags_once(&flags->complex);
 	else if (ft_strequ(arg, "--adaptive"))
-		flags->adaptive = 1;
+		set_flags_once(&flags->adaptive);
 	else if (ft_strequ(arg, "--bench"))
-		flags->bench = 1;
+		set_flags_once(&flags->bench);
 	else
 		return (0);
 	return (1);
 }
+
+
 
 static char	**filter_flags(int argc, char **argv, int *out_argc,
 		t_flags *flags)
