@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   disorder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: semirkar <semirkar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/21 11:54:34 by semirkar         ###   ########.fr       */
+/*   Updated: 2026/08/22 17:37:56 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,25 @@ int	total_pairs(int n)
 	return ((n * (n - 1)) / 2);
 }
 
-int	disorder_scaled(t_stack *a)
+float	disorder_scaled(t_stack *a)
 {
-	int	mistakes;
-	int	pairs;
+	int		mistakes;
+	int		pairs;
+	float	result;
 
 	pairs = total_pairs(a->size);
 	if (pairs == 0)
-		return (0);
+		return (0.0f);
 	mistakes = count_mistakes(a);
-	return ((mistakes * 10000) / pairs);
+	result = (float)mistakes / (float)pairs;
+	return (result);
 }
 
-void	print_disorder_pct(int scaled, int fd)
+void	print_disorder_pct(float disorder, int fd)
 {
-	ft_putnbr_fd(scaled / 100, fd);
-	ft_putstr_fd(".", fd);
-	if (scaled % 100 < 10)
-		ft_putstr_fd("0", fd);
-	ft_putnbr_fd(scaled % 100, fd);
+	int	percentage;
+
+	percentage = (int)(disorder * 100);
+	ft_putnbr_fd(percentage, fd);
 	ft_putstr_fd("%", fd);
 }

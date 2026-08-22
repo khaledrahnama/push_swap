@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: khaledrahnama <khaledrahnama@student.42.fr>+#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 00:00:00 by khaledrahnama     #+#    #+#             */
-/*   Updated: 2026/08/16 00:00:00 by khaledrahnama    ###   ########.fr       */
-=======
-/*   By: semirkar <semirkar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/16 17:16:13 by krahnama          #+#    #+#             */
-/*   Updated: 2026/08/21 11:54:00 by semirkar         ###   ########.fr       */
->>>>>>> 45c633a4575637f329568428fa8638f9d3aa86e0
+/*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/08/22 14:05:58 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
