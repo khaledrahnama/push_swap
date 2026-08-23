@@ -12,11 +12,11 @@
 
 #include "push_swap.h"
 
-int	count_mistakes(t_stack *a)
+long	count_mistakes(t_stack *a)
 {
-	int	i;
-	int	j;
-	int	mistakes;
+	long	mistakes;
+	int		i;
+	int		j;
 
 	mistakes = 0;
 	i = 0;
@@ -34,32 +34,45 @@ int	count_mistakes(t_stack *a)
 	return (mistakes);
 }
 
-int	total_pairs(int n)
+int	stack_is_sorted(t_stack *a)
+{
+	int	i;
+
+	i = 1;
+	while (i < a->size)
+	{
+		if (a->data[i - 1] > a->data[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static long	total_pairs(int n)
 {
 	if (n < 2)
 		return (0);
-	return ((n * (n - 1)) / 2);
+	return ((long)n * (n - 1) / 2);
 }
 
-float	disorder_scaled(t_stack *a)
+int	disorder_scaled(t_stack *a)
 {
-	int		mistakes;
-	int		pairs;
-	float	result;
+	long	mistakes;
+	long	pairs;
 
 	pairs = total_pairs(a->size);
 	if (pairs == 0)
-		return (0.0f);
+		return (0);
 	mistakes = count_mistakes(a);
-	result = (float)mistakes / (float)pairs;
-	return (result);
+	return ((int)(mistakes * 10000 / pairs));
 }
 
-void	print_disorder_pct(float disorder, int fd)
+void	print_disorder_pct(int scaled, int fd)
 {
-	int	percentage;
-
-	percentage = (int)(disorder * 100);
-	ft_putnbr_fd(percentage, fd);
+	ft_putnbr_fd(scaled / 100, fd);
+	ft_putstr_fd(".", fd);
+	if (scaled % 100 < 10)
+		ft_putstr_fd("0", fd);
+	ft_putnbr_fd(scaled % 100, fd);
 	ft_putstr_fd("%", fd);
 }

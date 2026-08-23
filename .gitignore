@@ -1,0 +1,9 @@
+# Build artifacts
+objs/
+push_swap
+checker
+*.o
+*.a
+
+# macOS
+.DS_Store

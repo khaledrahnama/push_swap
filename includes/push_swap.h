@@ -115,9 +115,10 @@ void	get_chunk_bounds(t_chunk_plan *plan, int c, t_chunk *chunk);
 int		*build_sorted_copy(t_stack *a);
 int		rank_of(int value, int *sorted, int n);
 int		nbits_for(int n);
-int		count_mistakes(t_stack *a);
-float		disorder_scaled(t_stack *a);
-void	print_disorder_pct(float disorder, int fd);
+long	count_mistakes(t_stack *a);
+int		stack_is_sorted(t_stack *a);
+int		disorder_scaled(t_stack *a);
+void	print_disorder_pct(int scaled, int fd);
 void	print_bench(t_stats *stats, int disorder_val, const char *strat,
 			const char *complexity);
 #endif

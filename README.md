@@ -161,6 +161,29 @@ disorder on average, so a lot of "fully random" test cases end up sitting
 right on the Medium/Complex boundary. That's just how the metric works,
 not something specific to our code.
 
+### Measured results
+
+Operation counts over 30 random shuffles per size (values from
+`--bench`, verified by replaying the operation stream):
+
+| n   | simple | medium | complex | adaptive |
+|-----|--------|--------|---------|----------|
+| 100 | 1452   | **821**| 1084    | 932      |
+| 500 | 32106  | 8537   |**6784** | 7715     |
+
+Two things worth being upfront about:
+
+- Adaptive is not the best strategy at either size. Because a random
+  shuffle lands at ~50% disorder, it sits exactly on the medium/complex
+  boundary and flips between the two from run to run, so it averages out
+  worse than just picking the right one. At n=100 medium wins; at n=500
+  complex wins.
+- Neither hits the subject's top performance band (under 700 ops for
+  n=100, under 5500 for n=500). Medium at n=100 and complex at n=500 land
+  in the next band down. Closing that gap needs a smarter chunk sort
+  (cost-based rotation, pushing from both ends of the stack with
+  `rra`/`rrb`), which we have not implemented.
+
 ### On complexity and memory
 
 All four strategies allocate a bit of scratch space (a sorted copy of the
@@ -170,10 +193,11 @@ does recurse is `ft_putnbr_fd`, which just prints a number digit by digit
 — it recurses at most 10 times for a 32-bit int, so it's not really
 relevant to anything above.
 
-We checked the operation counts for every strategy against the subject's
-performance requirements (100 and 500 random numbers) and cross-checked
-correctness with an independent Python script that replays the operation
-stream and checks the result.
+We measured the operation counts for every strategy against the subject's
+performance requirements (100 and 500 random numbers) — see the table
+above for where we actually land — and cross-checked correctness with an
+independent Python script that replays the operation stream and checks
+the result.
 
 ## Resources
 

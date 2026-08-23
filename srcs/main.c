@@ -77,7 +77,7 @@ static void	determine_label(t_flags *flags, t_run_ctx *ctx)
 	else
 	{
 		ctx->name = "Adaptive";
-		ctx->complexity = "O(n^2)";
+		ctx->complexity = "n/a";
 	}
 }
 
@@ -97,7 +97,7 @@ int	main(int argc, char **argv)
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	ctx = (t_run_ctx){&a, &b, &stats, disorder_scaled(&a), "", ""};
 	determine_label(&flags, &ctx);
-	if (ctx.disorder != 0)
+	if (!stack_is_sorted(&a))
 		run_strategy(&flags, &ctx);
 	if (flags.bench)
 		print_bench(ctx.stats, ctx.disorder, ctx.name, ctx.complexity);
