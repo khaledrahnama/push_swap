@@ -103,6 +103,8 @@ void	op_rr(t_stack *a, t_stack *b, int print, t_stats *stats);
 void	op_rra(t_stack *a, int print, t_stats *stats);
 void	op_rrb(t_stack *b, int print, t_stats *stats);
 void	op_rrr(t_stack *a, t_stack *b, int print, t_stats *stats);
+int		find_min_index(t_stack *a);
+void	rotate_to_top(t_stack *a, int index, t_stats *stats);
 void	sort_simple(t_stack *a, t_stack *b, t_stats *stats);
 void	sort_medium(t_stack *a, t_stack *b, t_stats *stats);
 void	sort_complex(t_stack *a, t_stack *b, t_stats *stats);

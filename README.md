@@ -139,26 +139,29 @@ If the stack is already sorted (disorder is 0, which also covers the
 trivial 0/1-element case), we don't do anything at all — no operations,
 no output.
 
-For 3 elements or fewer, we solve it directly with just `sa`/`ra`/`rra`,
-never touching `b`. We checked all 6 possible orderings of 3 elements by
-hand (well, by brute force script) and confirmed every single one can be
-sorted in 2 moves or fewer this way, so that's what we hardcoded. This
-one is not a complexity violation the way the old 4-to-10 shortcut was:
-it runs in constant time, and O(1) sits inside O(n²), O(n·√n) and
-O(n·log n) alike, so it satisfies whichever regime the disorder lands in.
-`--bench` still reports the regime the disorder actually selected.
+For 5 elements or fewer we solve it directly. Three or fewer is handled
+with just `sa`/`ra`/`rra`, never touching `b`; all 6 orderings of 3
+elements sort in 2 moves or fewer that way. For 4 and 5 we push the
+smallest elements to `b` until 3 are left, sort those three, and push
+back — 6 moves at worst for n=4, 10 for n=5.
 
-Everything above 3 elements goes by the disorder thresholds from the
-subject — there is no size-based shortcut. We did originally special-case
-4 to 10 elements to always use Simple, because Simple genuinely costs
-fewer operations than Medium or Complex all the way up to around
-n=75-100. But the subject ties each disorder regime to a required
-complexity class, and Simple is O(n²), so using it in the 0.2-0.5 or
-≥0.5 regime breaks that requirement no matter how small n is. Correctness
-against the spec wins over the operation count here, so the shortcut is
-gone.
+This is not a complexity violation the way the old 4-to-10 Simple
+shortcut was. The number of operations here is bounded by a constant
+regardless of input, so the routine is O(1), and O(1) sits inside O(n²),
+O(n·√n) and O(n·log n) alike — it satisfies whichever regime the disorder
+lands in. The old shortcut ran Simple, which really is O(n²) and really
+does exceed the tighter two bounds. `--bench` still reports the regime
+the disorder actually selected, not the routine that ran.
 
-The thresholds, applied at every size above 3:
+Everything above 5 elements goes by the disorder thresholds from the
+subject — no size-based shortcut. We did originally special-case 4 to 10
+elements to always use Simple, because Simple genuinely costs fewer
+operations than Medium or Complex up to around n=75-100. But the subject
+ties each disorder regime to a required complexity class, and Simple is
+O(n²), so using it in the 0.2-0.5 or ≥0.5 regime breaks that requirement
+no matter how small n is. That shortcut is gone.
+
+The thresholds, applied at every size above 5:
 
 - under 20% disorder → Simple
 - 20% to 50% → Medium
@@ -179,17 +182,16 @@ Operation counts over 30 random shuffles per size (values from
 | 100 | 1452   | **821**| 1084    | 932      |
 | 500 | 32106  | 8537   |**6784** | 7715     |
 
-Adaptive at small sizes, exhaustively over every permutation:
+Adaptive at small sizes, exhaustively over every permutation — these are
+worst cases, not samples:
 
-| n | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-|---|---|---|---|---|---|---|---|
-| avg ops | 0.5 | 1.2 | 10.8 | 20.0 | 22.8 | 26.6 | 33.3 |
-| max ops | 1 | 2 | 12 | 25 | 29 | 33 | 36 |
+| n | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|
+| avg ops | 0.5 | 1.2 | 4.1 | 7.3 | 22.8 | 26.6 |
+| max ops | 1 | 2 | 6 | 10 | 29 | 33 |
 
-These small-n numbers got worse when we removed the 4-to-10 Simple
-shortcut (n=5 went from ~13 to ~20 operations). That is the price of
-honouring the complexity class the subject requires per disorder regime;
-see the Adaptive section above.
+The jump between n=5 and n=6 is where the constant-time small-case
+routine hands over to the disorder-driven strategies.
 
 Two things worth being upfront about:
 
