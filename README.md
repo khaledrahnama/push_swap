@@ -142,15 +142,23 @@ no output.
 For 3 elements or fewer, we solve it directly with just `sa`/`ra`/`rra`,
 never touching `b`. We checked all 6 possible orderings of 3 elements by
 hand (well, by brute force script) and confirmed every single one can be
-sorted in 2 moves or fewer this way, so that's what we hardcoded.
+sorted in 2 moves or fewer this way, so that's what we hardcoded. This
+one is not a complexity violation the way the old 4-to-10 shortcut was:
+it runs in constant time, and O(1) sits inside O(n²), O(n·√n) and
+O(n·log n) alike, so it satisfies whichever regime the disorder lands in.
+`--bench` still reports the regime the disorder actually selected.
 
-For anything from 4 up to 10 elements, we just use the Simple strategy no
-matter what the disorder looks like. We tested this — Simple actually
-holds up fine (and is often better) compared to Medium or Complex all the
-way up to somewhere around n=75-100. The fancier strategies only start
-winning once n is big enough that their extra setup work pays off.
+Everything above 3 elements goes by the disorder thresholds from the
+subject — there is no size-based shortcut. We did originally special-case
+4 to 10 elements to always use Simple, because Simple genuinely costs
+fewer operations than Medium or Complex all the way up to around
+n=75-100. But the subject ties each disorder regime to a required
+complexity class, and Simple is O(n²), so using it in the 0.2-0.5 or
+≥0.5 regime breaks that requirement no matter how small n is. Correctness
+against the spec wins over the operation count here, so the shortcut is
+gone.
 
-Past that, we go by the disorder thresholds given in the subject:
+The thresholds, applied at every size above 3:
 
 - under 20% disorder → Simple
 - 20% to 50% → Medium
@@ -170,6 +178,18 @@ Operation counts over 30 random shuffles per size (values from
 |-----|--------|--------|---------|----------|
 | 100 | 1452   | **821**| 1084    | 932      |
 | 500 | 32106  | 8537   |**6784** | 7715     |
+
+Adaptive at small sizes, exhaustively over every permutation:
+
+| n | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|
+| avg ops | 0.5 | 1.2 | 10.8 | 20.0 | 22.8 | 26.6 | 33.3 |
+| max ops | 1 | 2 | 12 | 25 | 29 | 33 | 36 |
+
+These small-n numbers got worse when we removed the 4-to-10 Simple
+shortcut (n=5 went from ~13 to ~20 operations). That is the price of
+honouring the complexity class the subject requires per disorder regime;
+see the Adaptive section above.
 
 Two things worth being upfront about:
 

@@ -12,8 +12,6 @@
 
 #include "push_swap.h"
 
-#define ADAPTIVE_SMALL_N 10
-
 static void	sort_tiny(t_stack *a, t_stats *stats)
 {
 	if (a->size == 2)
@@ -40,41 +38,30 @@ static void	sort_tiny(t_stack *a, t_stats *stats)
 	}
 }
 
-static int	sort_by_size(t_stack *a, t_stack *b, t_stats *stats)
+static int	regime_of(int scaled)
 {
-	if (a->size <= 3)
-	{
-		sort_tiny(a, stats);
+	if (scaled < 2000)
+		return (0);
+	if (scaled < 5000)
 		return (1);
-	}
-	if (a->size <= ADAPTIVE_SMALL_N)
-	{
-		sort_simple(a, b, stats);
-		return (1);
-	}
-	return (0);
+	return (2);
 }
 
 int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
 {
 	int	scaled;
 
-	if (sort_by_size(a, b, stats))
-		return (0);
 	scaled = disorder_scaled(a);
+	if (a->size <= 3)
+	{
+		sort_tiny(a, stats);
+		return (regime_of(scaled));
+	}
 	if (scaled < 2000)
-	{
 		sort_simple(a, b, stats);
-		return (0);
-	}
 	else if (scaled < 5000)
-	{
 		sort_medium(a, b, stats);
-		return (1);
-	}
 	else
-	{
 		sort_complex(a, b, stats);
-		return (2);
-	}
+	return (regime_of(scaled));
 }
