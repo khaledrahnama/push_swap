@@ -138,10 +138,29 @@ stack, that's where the O(n log n) comes from.
 ### Adaptive
 
 Before doing anything, we measure how "out of order" the stack is —
-literally counting how many pairs are in the wrong order relative to each
-other, divided by the total number of pairs. That's the disorder metric
-from the subject. We keep it as a scaled integer instead of a float so we
-never have to print a floating point number.
+counting how many pairs are in the wrong order relative to each other,
+divided by the total number of pairs. That is the disorder metric from
+the subject, and we keep it exactly as the subject defines it: a `double`
+between 0 and 1, compared directly against the thresholds. No scaling, no
+rescaled integers — `disorder < 0.2` in the code means what it says.
+
+The thresholds live in `push_swap.h` as `LOW_DISORDER` (0.2) and
+`HIGH_DISORDER` (0.5), so the selection reads the same as the subject:
+
+```c
+if (a->size <= SMALL_STACK_MAX)
+    sort_small(a, b, stats);
+else if (disorder < LOW_DISORDER)
+    sort_simple(a, b, stats);
+else if (disorder < HIGH_DISORDER)
+    sort_medium(a, b, stats);
+else
+    sort_complex(a, b, stats);
+```
+
+The pair counting itself uses `long` rather than `double`, because the
+number of pairs is n(n-1)/2 and that overflows a 32-bit int above about
+n=65000; only the final division produces the ratio.
 
 A few things happen depending on what we find:
 

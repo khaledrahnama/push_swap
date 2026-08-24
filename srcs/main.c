@@ -95,7 +95,7 @@ int	main(int argc, char **argv)
 	init_and_parse(argc, argv, &flags, &a);
 	stack_init(&b, a.size);
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	ctx = (t_run_ctx){&a, &b, &stats, disorder_scaled(&a), "", ""};
+	ctx = (t_run_ctx){&a, &b, &stats, disorder_of(&a), "", ""};
 	determine_label(&flags, &ctx);
 	if (!stack_is_sorted(&a))
 		run_strategy(&flags, &ctx);

@@ -55,24 +55,25 @@ static long	total_pairs(int n)
 	return ((long)n * (n - 1) / 2);
 }
 
-int	disorder_scaled(t_stack *a)
+double	disorder_of(t_stack *a)
 {
-	long	mistakes;
 	long	pairs;
 
 	pairs = total_pairs(a->size);
 	if (pairs == 0)
-		return (0);
-	mistakes = count_mistakes(a);
-	return ((int)(mistakes * 10000 / pairs));
+		return (0.0);
+	return ((double)count_mistakes(a) / (double)pairs);
 }
 
-void	print_disorder_pct(int scaled, int fd)
+void	print_disorder_pct(double disorder, int fd)
 {
-	ft_putnbr_fd(scaled / 100, fd);
+	long	hundredths;
+
+	hundredths = (long)(disorder * 10000.0 + 0.5);
+	ft_putnbr_fd(hundredths / 100, fd);
 	ft_putstr_fd(".", fd);
-	if (scaled % 100 < 10)
+	if (hundredths % 100 < 10)
 		ft_putstr_fd("0", fd);
-	ft_putnbr_fd(scaled % 100, fd);
+	ft_putnbr_fd(hundredths % 100, fd);
 	ft_putstr_fd("%", fd);
 }

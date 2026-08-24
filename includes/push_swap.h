@@ -16,6 +16,10 @@
 # include <unistd.h>
 # include <limits.h>
 
+# define LOW_DISORDER 0.2
+# define HIGH_DISORDER 0.5
+# define SMALL_STACK_MAX 5
+
 typedef struct s_stack
 {
 	int	*data;
@@ -51,7 +55,7 @@ typedef struct s_run_ctx
 	t_stack		*a;
 	t_stack		*b;
 	t_stats		*stats;
-	int			disorder;
+	double		disorder;
 	const char	*name;
 	const char	*complexity;
 }	t_run_ctx;
@@ -119,8 +123,8 @@ int		rank_of(int value, int *sorted, int n);
 int		nbits_for(int n);
 long	count_mistakes(t_stack *a);
 int		stack_is_sorted(t_stack *a);
-int		disorder_scaled(t_stack *a);
-void	print_disorder_pct(int scaled, int fd);
-void	print_bench(t_stats *stats, int disorder_val, const char *strat,
+double	disorder_of(t_stack *a);
+void	print_disorder_pct(double disorder, int fd);
+void	print_bench(t_stats *stats, double disorder, const char *strat,
 			const char *complexity);
 #endif
