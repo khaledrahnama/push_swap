@@ -221,20 +221,54 @@ Two things worth being upfront about:
   genuinely loses (467 against 436). Radix wins by an increasing margin
   from there on — at n=500 it is 6784 against 32106.
 
-### On complexity and memory
+### Complexity argument — upper bounds
 
-All four strategies allocate a bit of scratch space (a sorted copy of the
-values, freed before returning) — that's O(n) extra memory. None of the
-sorting logic is recursive. The one function in the whole project that
-does recurse is `ft_putnbr_fd`, which just prints a number digit by digit
-— it recurses at most 10 times for a 32-bit int, so it's not really
-relevant to anything above.
+Time is counted in push_swap operations emitted, not in C-level work, as
+the subject requires. Space is auxiliary heap beyond the two stacks
+themselves (which are O(n) by definition).
+
+| strategy | time (operations) | auxiliary space |
+|---|---|---|
+| Simple | O(n²) | O(1) |
+| Medium | O(n·√n) | O(n) |
+| Complex | O(n·log n) | O(n) |
+| Adaptive | O(n²) / O(n·√n) / O(n·log n) by regime | O(n) |
+
+**Simple.** Each of the n extractions rotates the minimum to the top in
+at most ⌊n/2⌋ moves (we rotate whichever way is shorter), then one `pb`.
+Draining back is n `pa`. Bounded by n·(n/2) + 2n, so O(n²). It allocates
+nothing.
+
+**Medium.** The chunk size is 3.5·√n, so the number of chunks is
+⌈n / 3.5√n⌉ = O(√n). Each chunk costs one bounded sweep of the stack,
+at most n operations, giving O(n·√n) for all sweeps. Each element is
+drained with at most ⌊c/2⌋ rotations for chunk size c, and there are c
+elements per chunk over O(√n) chunks — O(√n · c²) = O(n·√n) again. Total
+O(n·√n). The sorted copy of the values is the O(n) space.
+
+**Complex.** Ranks run 0..n-1, so ⌈log₂ n⌉ bit levels. Each level is one
+pass — at most n `pb`/`ra` plus at most n `pa` to reload — so at most 2n
+operations per level, O(n·log n) overall. The sorted copy used for the
+rank binary search is the O(n) space.
+
+**Adaptive.** For n ≤ 5 it emits a number of operations bounded by a
+constant (6 at n=4, 10 at n=5, measured over every permutation), so that
+branch is O(1) — which sits inside all three required bounds and
+therefore satisfies whichever regime the disorder selects. Above n=5 it
+delegates to exactly the strategy its regime requires, so it inherits
+that strategy's bound. Computing the disorder itself costs no push_swap
+operations at all; it is O(n²) C-level work over the input, done once
+before any move is emitted, and allocates nothing.
+
+None of the sorting logic is recursive, so no strategy uses stack depth
+beyond O(1). The one recursive function in the project is `ft_putnbr_fd`,
+which recurses at most 10 times for a 32-bit int.
 
 We measured the operation counts for every strategy against the subject's
 performance requirements (100 and 500 random numbers) — see the table
 above for where we actually land — and cross-checked correctness with an
 independent Python script that replays the operation stream and checks
-the result.
+that `a` ends sorted and `b` ends empty.
 
 ## Resources
 
