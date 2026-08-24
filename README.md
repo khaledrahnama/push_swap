@@ -284,11 +284,22 @@ level is one pass: at most n `pb`/`ra`, then at most n `pa` to reload.
 2n per level, O(n·log n) in total. The sorted copy used for the rank
 lookup is the O(n) space.
 
-Adaptive is whichever of the three it delegated to, so it inherits that
-bound. Below n=6 it's the small-stack routine, capped at a constant
-number of operations, so O(1). Measuring the disorder costs zero
-push_swap operations — it's O(n²) work in C, done once before anything
-is printed, and allocates nothing.
+Adaptive inherits both bounds from whichever of the three it delegated
+to, so in the worst case that's O(n²) operations and O(n) space, and in
+each regime it's the pair on that row of the table. Below n=6 it runs the
+small-stack routine instead: at most 6 operations at n=4 and 10 at n=5,
+capped by a constant rather than growing with n, so O(1) time, and it
+allocates nothing, so O(1) space. Measuring the disorder before any of
+that costs zero push_swap operations. It's O(n²) work down in C, done
+once before anything is printed, and it allocates nothing either.
+
+Counting everything the program allocates, there are five places and all
+of them are O(n): the two stacks, the joined argument string and the
+filtered argv list that parsing builds, and the sorted copy of the values
+that Medium and Complex each need. The two parsing buffers are freed
+before any sorting starts and the sorted copy is freed before the
+strategy returns, so peak usage is O(n) whichever way the program is
+invoked.
 
 Nothing in the sorting logic recurses, so stack depth is O(1) throughout.
 The only recursive function in the project is `ft_putnbr_fd`, and that
