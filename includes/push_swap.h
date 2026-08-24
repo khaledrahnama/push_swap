@@ -16,6 +16,16 @@
 # include <unistd.h>
 # include <limits.h>
 
+# define LOW_DISORDER 0.2
+# define HIGH_DISORDER 0.5
+# define SMALL_STACK_MAX 5
+
+# define METHOD_NONE -1
+# define METHOD_SIMPLE 0
+# define METHOD_MEDIUM 1
+# define METHOD_COMPLEX 2
+# define METHOD_SMALL 3
+
 typedef struct s_stack
 {
 	int	*data;
@@ -48,12 +58,11 @@ typedef struct s_flags
 
 typedef struct s_run_ctx
 {
-	t_stack		*a;
-	t_stack		*b;
-	t_stats		*stats;
-	int			disorder;
-	const char	*name;
-	const char	*complexity;
+	t_stack	*a;
+	t_stack	*b;
+	t_stats	*stats;
+	double	disorder;
+	int		method;
 }	t_run_ctx;
 
 typedef struct s_chunk
@@ -103,6 +112,8 @@ void	op_rr(t_stack *a, t_stack *b, int print, t_stats *stats);
 void	op_rra(t_stack *a, int print, t_stats *stats);
 void	op_rrb(t_stack *b, int print, t_stats *stats);
 void	op_rrr(t_stack *a, t_stack *b, int print, t_stats *stats);
+int		find_min_index(t_stack *a);
+void	rotate_to_top(t_stack *a, int index, t_stats *stats);
 void	sort_simple(t_stack *a, t_stack *b, t_stats *stats);
 void	sort_medium(t_stack *a, t_stack *b, t_stats *stats);
 void	sort_complex(t_stack *a, t_stack *b, t_stats *stats);
@@ -115,9 +126,10 @@ void	get_chunk_bounds(t_chunk_plan *plan, int c, t_chunk *chunk);
 int		*build_sorted_copy(t_stack *a);
 int		rank_of(int value, int *sorted, int n);
 int		nbits_for(int n);
-int		count_mistakes(t_stack *a);
-float		disorder_scaled(t_stack *a);
-void	print_disorder_pct(float disorder, int fd);
-void	print_bench(t_stats *stats, int disorder_val, const char *strat,
+long	count_mistakes(t_stack *a);
+int		stack_is_sorted(t_stack *a);
+double	disorder_of(t_stack *a);
+void	print_disorder_pct(double disorder, int fd);
+void	print_bench(t_stats *stats, double disorder, const char *strat,
 			const char *complexity);
 #endif

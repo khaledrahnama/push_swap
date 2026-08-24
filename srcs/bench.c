@@ -19,11 +19,11 @@ static int	total_ops(t_stats *stats)
 		+ stats->rra + stats->rrb + stats->rrr);
 }
 
-static void	print_bench_header(int disorder_val, const char *strat,
+static void	print_bench_header(double disorder, const char *strat,
 		const char *complexity)
 {
 	ft_putstr_fd("[bench] disorder: ", 2);
-	print_disorder_pct(disorder_val, 2);
+	print_disorder_pct(disorder, 2);
 	ft_putstr_fd("\n[bench] strategy: ", 2);
 	ft_putstr_fd(strat, 2);
 	ft_putstr_fd(" / ", 2);
@@ -63,10 +63,10 @@ static void	print_bench_counts2(t_stats *stats)
 	ft_putstr_fd("\n", 2);
 }
 
-void	print_bench(t_stats *stats, int disorder_val, const char *strat,
+void	print_bench(t_stats *stats, double disorder, const char *strat,
 		const char *complexity)
 {
-	print_bench_header(disorder_val, strat, complexity);
+	print_bench_header(disorder, strat, complexity);
 	ft_putstr_fd("[bench] total_ops: ", 2);
 	ft_putnbr_fd(total_ops(stats), 2);
 	ft_putstr_fd("\n", 2);

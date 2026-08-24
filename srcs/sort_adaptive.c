@@ -12,14 +12,13 @@
 
 #include "push_swap.h"
 
-#define ADAPTIVE_SMALL_N 10
-
 static void	sort_tiny(t_stack *a, t_stats *stats)
 {
+	if (stack_is_sorted(a))
+		return ;
 	if (a->size == 2)
 	{
-		if (a->data[0] > a->data[1])
-			op_sa(a, 1, stats);
+		op_sa(a, 1, stats);
 		return ;
 	}
 	if (a->data[0] < a->data[2] && a->data[2] < a->data[1])
@@ -40,41 +39,44 @@ static void	sort_tiny(t_stack *a, t_stats *stats)
 	}
 }
 
-static int	sort_by_size(t_stack *a, t_stack *b, t_stats *stats)
+static void	sort_small(t_stack *a, t_stack *b, t_stats *stats)
 {
-	if (a->size <= 3)
+	if (a->size < 2)
+		return ;
+	while (a->size > 3)
 	{
-		sort_tiny(a, stats);
-		return (1);
+		rotate_to_top(a, find_min_index(a), stats);
+		op_pb(a, b, 1, stats);
 	}
-	if (a->size <= ADAPTIVE_SMALL_N)
-	{
-		sort_simple(a, b, stats);
-		return (1);
-	}
-	return (0);
+	sort_tiny(a, stats);
+	while (b->size > 0)
+		op_pa(a, b, 1, stats);
+}
+
+static int	regime_method(double disorder)
+{
+	if (disorder < LOW_DISORDER)
+		return (METHOD_SIMPLE);
+	if (disorder < HIGH_DISORDER)
+		return (METHOD_MEDIUM);
+	return (METHOD_COMPLEX);
 }
 
 int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
 {
-	int	scaled;
+	double	disorder;
 
-	if (sort_by_size(a, b, stats))
-		return (0);
-	scaled = disorder_scaled(a);
-	if (scaled < 2000)
+	disorder = disorder_of(a);
+	if (a->size <= SMALL_STACK_MAX)
 	{
+		sort_small(a, b, stats);
+		return (METHOD_SMALL);
+	}
+	if (disorder < LOW_DISORDER)
 		sort_simple(a, b, stats);
-		return (0);
-	}
-	else if (scaled < 5000)
-	{
+	else if (disorder < HIGH_DISORDER)
 		sort_medium(a, b, stats);
-		return (1);
-	}
 	else
-	{
 		sort_complex(a, b, stats);
-		return (2);
-	}
+	return (regime_method(disorder));
 }
