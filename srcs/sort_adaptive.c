@@ -53,13 +53,13 @@ static void	sort_small(t_stack *a, t_stack *b, t_stats *stats)
 		op_pa(a, b, 1, stats);
 }
 
-static int	regime_of(double disorder)
+static int	regime_method(double disorder)
 {
 	if (disorder < LOW_DISORDER)
-		return (0);
+		return (METHOD_SIMPLE);
 	if (disorder < HIGH_DISORDER)
-		return (1);
-	return (2);
+		return (METHOD_MEDIUM);
+	return (METHOD_COMPLEX);
 }
 
 int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
@@ -68,12 +68,15 @@ int	sort_adaptive(t_stack *a, t_stack *b, t_stats *stats)
 
 	disorder = disorder_of(a);
 	if (a->size <= SMALL_STACK_MAX)
+	{
 		sort_small(a, b, stats);
-	else if (disorder < LOW_DISORDER)
+		return (METHOD_SMALL);
+	}
+	if (disorder < LOW_DISORDER)
 		sort_simple(a, b, stats);
 	else if (disorder < HIGH_DISORDER)
 		sort_medium(a, b, stats);
 	else
 		sort_complex(a, b, stats);
-	return (regime_of(disorder));
+	return (regime_method(disorder));
 }

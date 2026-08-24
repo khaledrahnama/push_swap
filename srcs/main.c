@@ -12,73 +12,65 @@
 
 #include "push_swap.h"
 
-static const char	*complexity_for_regime(int regime)
+static const char	*complexity_for(int method)
 {
-	if (regime == 0)
+	if (method == METHOD_SIMPLE)
 		return ("O(n^2)");
-	else if (regime == 1)
+	if (method == METHOD_MEDIUM)
 		return ("O(n*sqrt(n))");
-	return ("O(n log n)");
+	if (method == METHOD_COMPLEX)
+		return ("O(n log n)");
+	if (method == METHOD_SMALL)
+		return ("O(1)");
+	return ("n/a");
 }
 
-static void	run_forced(t_flags *flags, t_run_ctx *ctx)
+static const char	*name_for(int method, int adaptive)
+{
+	if (!adaptive)
+	{
+		if (method == METHOD_SIMPLE)
+			return ("Simple");
+		if (method == METHOD_MEDIUM)
+			return ("Medium");
+		return ("Complex");
+	}
+	if (method == METHOD_SIMPLE)
+		return ("Adaptive (Simple)");
+	if (method == METHOD_MEDIUM)
+		return ("Adaptive (Medium)");
+	if (method == METHOD_COMPLEX)
+		return ("Adaptive (Complex)");
+	if (method == METHOD_SMALL)
+		return ("Adaptive (Small)");
+	return ("Adaptive");
+}
+
+static int	forced_method(t_flags *flags)
 {
 	if (flags->simple)
-	{
+		return (METHOD_SIMPLE);
+	if (flags->medium)
+		return (METHOD_MEDIUM);
+	if (flags->complex)
+		return (METHOD_COMPLEX);
+	return (METHOD_NONE);
+}
+
+static int	run_sort(t_flags *flags, t_run_ctx *ctx)
+{
+	int	method;
+
+	method = forced_method(flags);
+	if (method == METHOD_SIMPLE)
 		sort_simple(ctx->a, ctx->b, ctx->stats);
-		ctx->name = "Simple";
-		ctx->complexity = "O(n^2)";
-	}
-	else if (flags->medium)
-	{
+	else if (method == METHOD_MEDIUM)
 		sort_medium(ctx->a, ctx->b, ctx->stats);
-		ctx->name = "Medium";
-		ctx->complexity = "O(n*sqrt(n))";
-	}
-	else
-	{
+	else if (method == METHOD_COMPLEX)
 		sort_complex(ctx->a, ctx->b, ctx->stats);
-		ctx->name = "Complex";
-		ctx->complexity = "O(n log n)";
-	}
-}
-
-static void	run_strategy(t_flags *flags, t_run_ctx *ctx)
-{
-	int	regime;
-
-	if (flags->simple || flags->medium || flags->complex)
-		run_forced(flags, ctx);
 	else
-	{
-		regime = sort_adaptive(ctx->a, ctx->b, ctx->stats);
-		ctx->name = "Adaptive";
-		ctx->complexity = complexity_for_regime(regime);
-	}
-}
-
-static void	determine_label(t_flags *flags, t_run_ctx *ctx)
-{
-	if (flags->simple)
-	{
-		ctx->name = "Simple";
-		ctx->complexity = "O(n^2)";
-	}
-	else if (flags->medium)
-	{
-		ctx->name = "Medium";
-		ctx->complexity = "O(n*sqrt(n))";
-	}
-	else if (flags->complex)
-	{
-		ctx->name = "Complex";
-		ctx->complexity = "O(n log n)";
-	}
-	else
-	{
-		ctx->name = "Adaptive";
-		ctx->complexity = "n/a";
-	}
+		method = sort_adaptive(ctx->a, ctx->b, ctx->stats);
+	return (method);
 }
 
 int	main(int argc, char **argv)
@@ -95,12 +87,13 @@ int	main(int argc, char **argv)
 	init_and_parse(argc, argv, &flags, &a);
 	stack_init(&b, a.size);
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	ctx = (t_run_ctx){&a, &b, &stats, disorder_of(&a), "", ""};
-	determine_label(&flags, &ctx);
+	ctx = (t_run_ctx){&a, &b, &stats, disorder_of(&a), forced_method(&flags)};
 	if (!stack_is_sorted(&a))
-		run_strategy(&flags, &ctx);
+		ctx.method = run_sort(&flags, &ctx);
 	if (flags.bench)
-		print_bench(ctx.stats, ctx.disorder, ctx.name, ctx.complexity);
+		print_bench(&stats, ctx.disorder,
+			name_for(ctx.method, forced_method(&flags) == METHOD_NONE),
+			complexity_for(ctx.method));
 	stack_free(&a);
 	stack_free(&b);
 	return (0);

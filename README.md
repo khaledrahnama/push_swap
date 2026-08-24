@@ -240,6 +240,36 @@ Two things worth being upfront about:
   genuinely loses (467 against 436). Radix wins by an increasing margin
   from there on — at n=500 it is 6784 against 32106.
 
+### What `--bench` reports
+
+`--bench` names the method that actually ran, not the class its regime
+would require. That distinction matters at n ≤ 5, where the small-case
+routine runs whatever the disorder is:
+
+```
+$ ./push_swap --bench 5 4 3 2 1
+[bench] disorder: 100.00%
+[bench] strategy: Adaptive (Small) / O(1)
+[bench] total_ops: 8
+```
+
+The disorder is 100%, so the high regime applies and requires O(n·log n);
+the routine that ran is O(1), which is inside that bound. Reporting
+`O(n log n)` here would have been misleading — it would suggest the
+Complex strategy ran, and `./push_swap --complex 5 4 3 2 1` produces 25
+operations, not 8.
+
+Above n=5 the label names the internal method, so the two agree exactly:
+
+```
+$ ./push_swap --bench <100 shuffled numbers>
+[bench] strategy: Adaptive (Complex) / O(n log n)
+```
+
+and that run emits byte-for-byte the same operations as
+`./push_swap --complex` on the same input. The label is checkable rather
+than a claim you have to take on trust.
+
 ### Complexity argument — upper bounds
 
 Time is counted in push_swap operations emitted, not in C-level work, as

@@ -20,6 +20,12 @@
 # define HIGH_DISORDER 0.5
 # define SMALL_STACK_MAX 5
 
+# define METHOD_NONE -1
+# define METHOD_SIMPLE 0
+# define METHOD_MEDIUM 1
+# define METHOD_COMPLEX 2
+# define METHOD_SMALL 3
+
 typedef struct s_stack
 {
 	int	*data;
@@ -52,12 +58,11 @@ typedef struct s_flags
 
 typedef struct s_run_ctx
 {
-	t_stack		*a;
-	t_stack		*b;
-	t_stats		*stats;
-	double		disorder;
-	const char	*name;
-	const char	*complexity;
+	t_stack	*a;
+	t_stack	*b;
+	t_stats	*stats;
+	double	disorder;
+	int		method;
 }	t_run_ctx;
 
 typedef struct s_chunk
