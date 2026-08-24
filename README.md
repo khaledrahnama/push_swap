@@ -172,14 +172,26 @@ five we push the smallest values into `b` until three are left, sort
 those, and push back. Worst case is 6 moves at n=4 and 10 at n=5, and we
 checked that against every permutation, not a sample.
 
-We were careful about this one, because an earlier version of the same
-idea was wrong. It used to send anything from 4 to 10 elements to Simple,
-which is cheaper at those sizes but is genuinely O(n²), so in the 0.2-0.5
-and ≥0.5 regimes it broke the complexity the subject asks for. The
-current small-stack routine is different: its operation count is capped
-by a constant no matter what the input is, so it's O(1), and O(1) fits
-inside O(n²), O(n·√n) and O(n·log n) alike. Whichever regime the disorder
-picks, it's satisfied.
+It's fair to ask whether skipping the thresholds like that breaks the
+complexity the subject asks for, so here's the argument. The subject says
+the internal techniques of the adaptive strategy are entirely up to us,
+and that the method chosen for a regime has to run in that regime's
+class. Complexity is a statement about growth as n gets large. A cutoff
+at a fixed size can't change it, because for any large n the cutoff
+branch is never the one that runs — the composite "small routine below 6,
+radix above" grows exactly like radix does, so it is O(n·log n), and the
+same holds for the other two regimes. This is what introsort and Timsort
+do when they drop to insertion sort on short runs, and nobody calls those
+O(n²) as a result.
+
+Being honest about the limits of that argument: a cutoff at 5 and a
+cutoff at 1000 are identical asymptotically, so the maths alone doesn't
+separate a sensible one from a dodge. What makes ours defensible is that
+it's small, it costs fewer operations than either alternative at those
+sizes (10 at worst against Simple's 15 and radix's 25 for five numbers),
+and it's nowhere near the 100 and 500 the project is actually measured
+on. Everything at a size where a complexity claim can be tested is
+decided by the disorder thresholds and nothing else.
 
 Everything above five elements goes purely by disorder:
 
@@ -289,7 +301,9 @@ to, so in the worst case that's O(n²) operations and O(n) space, and in
 each regime it's the pair on that row of the table. Below n=6 it runs the
 small-stack routine instead: at most 6 operations at n=4 and 10 at n=5,
 capped by a constant rather than growing with n, so O(1) time, and it
-allocates nothing, so O(1) space. Measuring the disorder before any of
+allocates nothing, so O(1) space. What each regime's bound describes is
+the composite of those two branches, and since the small one stops being
+reachable at n=6 the growth is the delegate's, unchanged. Measuring the disorder before any of
 that costs zero push_swap operations. It's O(n²) work down in C, done
 once before anything is printed, and it allocates nothing either.
 
