@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-static int	find_min_index(t_stack *a)
+int	find_min_index(t_stack *a)
 {
 	int	min_idx;
 	int	i;
@@ -28,7 +28,7 @@ static int	find_min_index(t_stack *a)
 	return (min_idx);
 }
 
-static void	rotate_to_top(t_stack *a, int index, t_stats *stats)
+void	rotate_to_top(t_stack *a, int index, t_stats *stats)
 {
 	int	steps_up;
 	int	steps_down;
