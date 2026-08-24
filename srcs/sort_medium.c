@@ -17,13 +17,21 @@ static void	sweep_chunk(t_stack *a, t_stack *b, t_chunk *chunk,
 {
 	int	sweep_count;
 	int	i;
+	int	mid;
+	int	value;
 
+	mid = chunk->min + (chunk->max - chunk->min) / 2;
 	sweep_count = a->size;
 	i = 0;
 	while (i < sweep_count)
 	{
-		if (a->data[0] >= chunk->min && a->data[0] <= chunk->max)
+		value = a->data[0];
+		if (value >= chunk->min && value <= chunk->max)
+		{
 			op_pb(a, b, 1, stats);
+			if (value < mid)
+				op_rb(b, 1, stats);
+		}
 		else
 			op_ra(a, 1, stats);
 		i++;

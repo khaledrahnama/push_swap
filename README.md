@@ -1,4 +1,4 @@
-*This activity has been created as part of the 42 curriculum by krahnama, semirkar.*
+*This activity has been created as part of the 42 curriculum by krahnama, semirkar*
 
 # push_swap
 
@@ -86,7 +86,7 @@ and you do that once per element removed.
 
 ### Medium (O(n·√n))
 
-We split the range of values into chunks of about `2.5×√n` numbers each.
+We split the range of values into chunks of about `3.5×√n` numbers each.
 Starting from the highest chunk and working down, we sweep through `a`
 once, sending anything in the current chunk to `b` and rotating everything
 else out of the way. Once a chunk is fully in `b` — and only that chunk,
@@ -100,12 +100,22 @@ order of things, only pushing does. So as long as each chunk is fully
 placed before the next one starts, later sweeps can spin right through
 the already-sorted parts without messing them up.
 
-About that `2.5×√n` number — it's not some formula from a textbook, we
-found it by testing. Plain `√n` (which is closer to the "proper" balance
-between sweep cost and drain cost) actually blew past the operation limit
-for n=500 in our testing. We tried a bunch of multipliers between 0.5x
-and 4x and `2.5x` gave the best results for both n=100 and n=500 without
-being a magic number that only works for one specific case.
+One detail that matters a lot: when we push an element into `b`, if it
+falls in the lower half of the current chunk we follow the `pb` with an
+`rb`. That costs one extra operation now but leaves `b` roughly ordered
+with the larger values near the top, so the drain afterwards finds its
+next maximum close to the top instead of halfway down. It cut n=500 from
+about 8500 operations to about 7200 on its own, and it does not change
+the complexity class — it is still one bounded pass per chunk.
+
+About that `3.5×√n` number — it's not a formula from a textbook, we found
+it by testing. Plain `√n` (closer to the "proper" balance between sweep
+cost and drain cost) blew past the operation limit for n=500. We swept
+multipliers from 1x to 8x; the curve is flat between 3.5x and 4x and gets
+worse either side, so we took 3.5x, which was best at n=50 and n=100 and
+tied at n=500. It stays a constant multiple of √n, so the chunk count
+stays Θ(√n) and the O(n·√n) bound holds — a multiplier that grew with n
+would quietly turn this into selection sort.
 
 ### Complex (O(n·log n))
 
@@ -177,10 +187,11 @@ not something specific to our code.
 Operation counts over 30 random shuffles per size (values from
 `--bench`, verified by replaying the operation stream):
 
-| n   | simple | medium | complex | adaptive |
-|-----|--------|--------|---------|----------|
-| 100 | 1452   | **821**| 1084    | 932      |
-| 500 | 32106  | 8537   |**6784** | 7715     |
+| n   | simple | medium  | complex  | adaptive |
+|-----|--------|---------|----------|----------|
+| 50  | 436    | **276** | 467      | 276-467  |
+| 100 | 1461   | **728** | 1084     | 856      |
+| 500 | 32106  | 7241    | **6784** | 7009     |
 
 Adaptive at small sizes, exhaustively over every permutation — these are
 worst cases, not samples:
@@ -200,11 +211,15 @@ Two things worth being upfront about:
   boundary and flips between the two from run to run, so it averages out
   worse than just picking the right one. At n=100 medium wins; at n=500
   complex wins.
-- Neither hits the subject's top performance band (under 700 ops for
-  n=100, under 5500 for n=500). Medium at n=100 and complex at n=500 land
-  in the next band down. Closing that gap needs a smarter chunk sort
-  (cost-based rotation, pushing from both ends of the stack with
-  `rra`/`rrb`), which we have not implemented.
+- Neither hits the top performance band (under 700 ops for n=100, under
+  5500 for n=500), though both sizes now sit comfortably in the band
+  above it. Getting to the top band in the high-disorder regime would
+  mean beating radix at O(n·log n) operations, which we did not manage.
+- Complex costs *more* than Simple below about n=60. That is not a bug.
+  Selection sort spends roughly n²/8 operations while radix spends about
+  1.5·n·log₂(n); the two cross over around n=60-75, so at n=50 radix
+  genuinely loses (467 against 436). Radix wins by an increasing margin
+  from there on — at n=500 it is 6784 against 32106.
 
 ### On complexity and memory
 

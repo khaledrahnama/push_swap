@@ -66,7 +66,7 @@ void	build_chunk_plan(t_stack *a, t_chunk_plan *plan)
 	}
 	copy_ints(plan->sorted, a->data, plan->n);
 	sort_ints_med(plan->sorted, plan->n);
-	plan->chunk_size = (int_sqrt(plan->n) * 5) / 2;
+	plan->chunk_size = (int_sqrt(plan->n) * 7) / 2;
 	if (plan->chunk_size < 1)
 		plan->chunk_size = 1;
 	plan->num_chunks = (plan->n + plan->chunk_size - 1) / plan->chunk_size;

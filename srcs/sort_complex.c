@@ -48,6 +48,8 @@ void	sort_complex(t_stack *a, t_stack *b, t_stats *stats)
 	bit = 0;
 	while (bit < nbits)
 	{
+		if (stack_is_sorted(a))
+			break ;
 		sweep_by_bit(a, b, &ctx, bit);
 		bit++;
 	}
