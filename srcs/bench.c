@@ -6,13 +6,13 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/16 18:37:46 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/08/25 10:39:48 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	total_ops(t_stats *stats)
+int	total_ops(t_stats *stats)
 {
 	return (stats->sa + stats->sb + stats->ss + stats->pa + stats->pb
 		+ stats->ra + stats->rb + stats->rr

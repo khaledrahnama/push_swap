@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/22 17:41:27 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/08/25 10:36:29 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_stats
 	int	rra;
 	int	rrb;
 	int	rrr;
+	int quiet;
 }	t_stats;
 
 typedef struct s_flags
@@ -54,6 +55,7 @@ typedef struct s_flags
 	int	complex;
 	int	bench;
 	int	adaptive;
+	int count_only;
 }	t_flags;
 
 typedef struct s_run_ctx
@@ -132,4 +134,5 @@ double	disorder_of(t_stack *a);
 void	print_disorder_pct(double disorder, int fd);
 void	print_bench(t_stats *stats, double disorder, const char *strat,
 			const char *complexity);
+int total_ops(t_stats *stats);
 #endif

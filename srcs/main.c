@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: semirkar <semirkar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/21 11:54:34 by semirkar         ###   ########.fr       */
+/*   Updated: 2026/08/25 11:16:21 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	forced_method(t_flags *flags)
 		return (METHOD_MEDIUM);
 	if (flags->complex)
 		return (METHOD_COMPLEX);
+	
 	return (METHOD_NONE);
 }
 
@@ -62,14 +63,22 @@ static int	run_sort(t_flags *flags, t_run_ctx *ctx)
 	int	method;
 
 	method = forced_method(flags);
-	if (method == METHOD_SIMPLE)
-		sort_simple(ctx->a, ctx->b, ctx->stats);
-	else if (method == METHOD_MEDIUM)
-		sort_medium(ctx->a, ctx->b, ctx->stats);
-	else if (method == METHOD_COMPLEX)
-		sort_complex(ctx->a, ctx->b, ctx->stats);
-	else
-		method = sort_adaptive(ctx->a, ctx->b, ctx->stats);
+	if(!stack_is_sorted(ctx->a))
+	{
+		if (method == METHOD_SIMPLE)
+			sort_simple(ctx->a, ctx->b, ctx->stats);
+		else if (method == METHOD_MEDIUM)
+			sort_medium(ctx->a, ctx->b, ctx->stats);
+		else if (method == METHOD_COMPLEX)
+			sort_complex(ctx->a, ctx->b, ctx->stats);
+		else
+			method = sort_adaptive(ctx->a, ctx->b, ctx->stats);
+	}
+	if (flags->count_only)
+	{
+		ft_putnbr_fd(total_ops(ctx->stats),1);
+		ft_putstr_fd("\n",1);
+	}
 	return (method);
 }
 
@@ -83,10 +92,10 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	flags = (t_flags){0, 0, 0, 0, 0};
+	flags = (t_flags){0, 0, 0, 0, 0, 0};
 	init_and_parse(argc, argv, &flags, &a);
 	stack_init(&b, a.size);
-	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, flags.count_only};
 	ctx = (t_run_ctx){&a, &b, &stats, disorder_of(&a), forced_method(&flags)};
 	if (!stack_is_sorted(&a))
 		ctx.method = run_sort(&flags, &ctx);
@@ -94,6 +103,7 @@ int	main(int argc, char **argv)
 		print_bench(&stats, ctx.disorder,
 			name_for(ctx.method, forced_method(&flags) == METHOD_NONE),
 			complexity_for(ctx.method));
+	
 	stack_free(&a);
 	stack_free(&b);
 	return (0);

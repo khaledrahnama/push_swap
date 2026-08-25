@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ops_push.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: semirkar <semirkar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/21 11:54:34 by semirkar         ###   ########.fr       */
+/*   Updated: 2026/08/25 10:39:09 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	op_pa(t_stack *a, t_stack *b, int print, t_stats *stats)
 		}
 		b->size--;
 	}
-	if (print)
+	if (print && !stats->quiet)
 		ft_putstr_fd("pa\n", 1);
 	if (stats)
 		stats->pa++;
@@ -62,7 +62,7 @@ void	op_pb(t_stack *a, t_stack *b, int print, t_stats *stats)
 		}
 		a->size--;
 	}
-	if (print)
+	if (print && !stats->quiet)
 		ft_putstr_fd("pb\n", 1);
 	if (stats)
 		stats->pb++;
