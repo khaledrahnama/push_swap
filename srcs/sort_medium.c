@@ -15,12 +15,12 @@
 static void	sweep_chunk(t_stack *a, t_stack *b, t_chunk *chunk,
 		t_stats *stats)
 {
-	int	sweep_count;
-	int	i;
-	int	mid;
-	int	value;
+	long	mid;
+	int		sweep_count;
+	int		i;
+	int		value;
 
-	mid = chunk->min + (chunk->max - chunk->min) / 2;
+	mid = ((long)chunk->min + (long)chunk->max) / 2;
 	sweep_count = a->size;
 	i = 0;
 	while (i < sweep_count)

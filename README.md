@@ -32,7 +32,7 @@ make          # builds push_swap
 The binary compiles clean with `-Wall -Wextra -Werror`. We don't use
 `printf`, `strtok`, `atoi`, or anything like that — only `read`, `write`,
 `malloc`, `free`, `exit`. Everything else (number parsing, string helpers,
-etc.) is written from scratch in `ft_utils.c`.
+etc.) is written from scratch in `ft_utils.c`. No global variables.
 
 ```bash
 make clean    # remove .o files
@@ -52,7 +52,7 @@ either works. If you don't pass a strategy flag it defaults to
 number shows up, anything after that is treated as stack data, even if
 it looks like a flag.
 
-`--bench` prints some stats to stderr after sorting — the disorder
+`--bench` prints some stats to stderr after sorting: the disorder
 percentage, which strategy got used, total operations, and a breakdown by
 operation type. It doesn't touch stdout, so you can still pipe the actual
 sort operations somewhere while watching the bench output separately.
@@ -100,22 +100,22 @@ order of things, only pushing does. So as long as each chunk is fully
 placed before the next one starts, later sweeps can spin right through
 the already-sorted parts without messing them up.
 
-One detail that matters a lot: when we push an element into `b`, if it
-falls in the lower half of the current chunk we follow the `pb` with an
-`rb`. That costs one extra operation now but leaves `b` roughly ordered
-with the larger values near the top, so the drain afterwards finds its
-next maximum close to the top instead of halfway down. It cut n=500 from
-about 8500 operations to about 7200 on its own, and it does not change
-the complexity class — it is still one bounded pass per chunk.
+There's one small trick in the sweep that turned out to matter more than
+we expected. When we push something into `b`, if its value falls in the
+lower half of the chunk we do an `rb` straight after the `pb`. It costs
+one extra operation, but it keeps the bigger values of the chunk near the
+top of `b`, so when we drain it back the next maximum is usually already
+close to the top instead of buried halfway down. That one line took n=500
+from roughly 8500 operations to roughly 7200.
 
-About that `3.5×√n` number — it's not a formula from a textbook, we found
-it by testing. Plain `√n` (closer to the "proper" balance between sweep
-cost and drain cost) blew past the operation limit for n=500. We swept
-multipliers from 1x to 8x; the curve is flat between 3.5x and 4x and gets
-worse either side, so we took 3.5x, which was best at n=50 and n=100 and
-tied at n=500. It stays a constant multiple of √n, so the chunk count
-stays Θ(√n) and the O(n·√n) bound holds — a multiplier that grew with n
-would quietly turn this into selection sort.
+The `3.5×√n` isn't from a textbook, we just tested for it. Plain `√n`
+looks like the "correct" balance between sweep cost and drain cost, but
+it blew past the operation limit at n=500. We tried multipliers from 1x
+up to 8x. Anything between 3.5x and 4x is about the same and both sides
+get worse, so we took 3.5x since it was the best of the two at n=50 and
+n=100. It's still a constant times √n, which is the part that matters:
+the chunk count stays Θ(√n) and the O(n·√n) bound holds. A multiplier
+that grew with n would quietly turn this back into selection sort.
 
 ### Complex (O(n·log n))
 
@@ -137,15 +137,15 @@ stack, that's where the O(n log n) comes from.
 
 ### Adaptive
 
-Before doing anything, we measure how "out of order" the stack is —
-counting how many pairs are in the wrong order relative to each other,
-divided by the total number of pairs. That is the disorder metric from
-the subject, and we keep it exactly as the subject defines it: a `double`
-between 0 and 1, compared directly against the thresholds. No scaling, no
-rescaled integers — `disorder < 0.2` in the code means what it says.
+Before doing anything we measure how out of order the stack is: count how
+many pairs are in the wrong order relative to each other, divide by the
+total number of pairs. That's the disorder metric from the subject, and
+we keep it as the subject defines it — a `double` between 0 and 1 that
+gets compared straight against the thresholds. No scaling. `disorder <
+0.2` in the code means exactly what it says.
 
-The thresholds live in `push_swap.h` as `LOW_DISORDER` (0.2) and
-`HIGH_DISORDER` (0.5), so the selection reads the same as the subject:
+The thresholds are named in `push_swap.h`, so the selection reads more or
+less like the subject text:
 
 ```c
 if (a->size <= SMALL_STACK_MAX)
@@ -158,93 +158,57 @@ else
     sort_complex(a, b, stats);
 ```
 
-The pair counting itself uses `long` rather than `double`, because the
-number of pairs is n(n-1)/2 and that overflows a 32-bit int above about
-n=65000; only the final division produces the ratio.
+Counting the pairs is done in `long`, not `double`. The number of pairs
+is n(n-1)/2, which overflows a 32-bit int somewhere above n=65000, and
+only the final division turns it into the ratio.
 
-A few things happen depending on what we find:
+If the stack is already sorted we print nothing at all. That covers the
+0 and 1 element cases too.
 
-If the stack is already sorted (disorder is 0, which also covers the
-trivial 0/1-element case), we don't do anything at all — no operations,
-no output.
+Five elements or fewer get solved directly instead of going through the
+thresholds. Three or fewer needs only `sa`/`ra`/`rra` and never touches
+`b` — all six orderings of three sort in two moves or less. For four and
+five we push the smallest values into `b` until three are left, sort
+those, and push back. Worst case is 6 moves at n=4 and 10 at n=5, and we
+checked that against every permutation, not a sample.
 
-For 5 elements or fewer we solve it directly. Three or fewer is handled
-with just `sa`/`ra`/`rra`, never touching `b`; all 6 orderings of 3
-elements sort in 2 moves or fewer that way. For 4 and 5 we push the
-smallest elements to `b` until 3 are left, sort those three, and push
-back — 6 moves at worst for n=4, 10 for n=5.
+It's fair to ask whether skipping the thresholds like that breaks the
+complexity the subject asks for, so here's the argument. The subject says
+the internal techniques of the adaptive strategy are entirely up to us,
+and that the method chosen for a regime has to run in that regime's
+class. Complexity is a statement about growth as n gets large. A cutoff
+at a fixed size can't change it, because for any large n the cutoff
+branch is never the one that runs — the composite "small routine below 6,
+radix above" grows exactly like radix does, so it is O(n·log n), and the
+same holds for the other two regimes. This is what introsort and Timsort
+do when they drop to insertion sort on short runs, and nobody calls those
+O(n²) as a result.
 
-This is not a complexity violation the way the old 4-to-10 Simple
-shortcut was. The number of operations here is bounded by a constant
-regardless of input, so the routine is O(1), and O(1) sits inside O(n²),
-O(n·√n) and O(n·log n) alike — it satisfies whichever regime the disorder
-lands in. The old shortcut ran Simple, which really is O(n²) and really
-does exceed the tighter two bounds. `--bench` still reports the regime
-the disorder actually selected, not the routine that ran.
+Being honest about the limits of that argument: a cutoff at 5 and a
+cutoff at 1000 are identical asymptotically, so the maths alone doesn't
+separate a sensible one from a dodge. What makes ours defensible is that
+it's small, it costs fewer operations than either alternative at those
+sizes (10 at worst against Simple's 15 and radix's 25 for five numbers),
+and it's nowhere near the 100 and 500 the project is actually measured
+on. Everything at a size where a complexity claim can be tested is
+decided by the disorder thresholds and nothing else.
 
-Everything above 5 elements goes by the disorder thresholds from the
-subject — no size-based shortcut. We did originally special-case 4 to 10
-elements to always use Simple, because Simple genuinely costs fewer
-operations than Medium or Complex up to around n=75-100. But the subject
-ties each disorder regime to a required complexity class, and Simple is
-O(n²), so using it in the 0.2-0.5 or ≥0.5 regime breaks that requirement
-no matter how small n is. That shortcut is gone.
+Everything above five elements goes purely by disorder:
 
-The thresholds, applied at every size above 5:
-
-- under 20% disorder → Simple
+- under 20% → Simple
 - 20% to 50% → Medium
 - 50% and above → Complex
 
-Worth knowing: a completely random shuffle tends to land right around 50%
-disorder on average, so a lot of "fully random" test cases end up sitting
-right on the Medium/Complex boundary. That's just how the metric works,
-not something specific to our code.
+One thing to know when testing: a fully random shuffle averages out at
+almost exactly 50% disorder, so a lot of random test cases land right on
+the Medium/Complex boundary and can go either way between runs. That's
+the metric doing what it's defined to do, not us.
 
-### Measured results
+### What `--bench` prints
 
-Operation counts over 30 random shuffles per size (values from
-`--bench`, verified by replaying the operation stream):
-
-| n   | simple | medium  | complex  | adaptive |
-|-----|--------|---------|----------|----------|
-| 50  | 436    | **276** | 467      | 276-467  |
-| 100 | 1461   | **728** | 1084     | 856      |
-| 500 | 32106  | 7241    | **6784** | 7009     |
-
-Adaptive at small sizes, exhaustively over every permutation — these are
-worst cases, not samples:
-
-| n | 2 | 3 | 4 | 5 | 6 | 7 |
-|---|---|---|---|---|---|---|
-| avg ops | 0.5 | 1.2 | 4.1 | 7.3 | 22.8 | 26.6 |
-| max ops | 1 | 2 | 6 | 10 | 29 | 33 |
-
-The jump between n=5 and n=6 is where the constant-time small-case
-routine hands over to the disorder-driven strategies.
-
-Two things worth being upfront about:
-
-- Adaptive is not the best strategy at either size. Because a random
-  shuffle lands at ~50% disorder, it sits exactly on the medium/complex
-  boundary and flips between the two from run to run, so it averages out
-  worse than just picking the right one. At n=100 medium wins; at n=500
-  complex wins.
-- Neither hits the top performance band (under 700 ops for n=100, under
-  5500 for n=500), though both sizes now sit comfortably in the band
-  above it. Getting to the top band in the high-disorder regime would
-  mean beating radix at O(n·log n) operations, which we did not manage.
-- Complex costs *more* than Simple below about n=60. That is not a bug.
-  Selection sort spends roughly n²/8 operations while radix spends about
-  1.5·n·log₂(n); the two cross over around n=60-75, so at n=50 radix
-  genuinely loses (467 against 436). Radix wins by an increasing margin
-  from there on — at n=500 it is 6784 against 32106.
-
-### What `--bench` reports
-
-`--bench` names the method that actually ran, not the class its regime
-would require. That distinction matters at n ≤ 5, where the small-case
-routine runs whatever the disorder is:
+The strategy line names the routine that actually ran, not the class the
+regime would have demanded. It only makes a visible difference at n ≤ 5,
+where the small-stack routine runs regardless of disorder:
 
 ```
 $ ./push_swap --bench 5 4 3 2 1
@@ -253,71 +217,112 @@ $ ./push_swap --bench 5 4 3 2 1
 [bench] total_ops: 8
 ```
 
-The disorder is 100%, so the high regime applies and requires O(n·log n);
-the routine that ran is O(1), which is inside that bound. Reporting
-`O(n log n)` here would have been misleading — it would suggest the
-Complex strategy ran, and `./push_swap --complex 5 4 3 2 1` produces 25
-operations, not 8.
+Disorder is 100% so the high regime applies and asks for O(n·log n). What
+ran was O(1), which is inside that. Printing `O(n log n)` there would
+have implied the Complex strategy ran, and `--complex 5 4 3 2 1` gives 25
+operations rather than 8, so the two outputs would have looked like they
+contradicted each other.
 
-Above n=5 the label names the internal method, so the two agree exactly:
+Above n=5 the label names the internal strategy, and an adaptive run
+labelled `(Complex)` prints exactly the same operations as `--complex`
+does on the same input. So the label can be checked instead of trusted.
 
-```
-$ ./push_swap --bench <100 shuffled numbers>
-[bench] strategy: Adaptive (Complex) / O(n log n)
-```
+### Measured results
 
-and that run emits byte-for-byte the same operations as
-`./push_swap --complex` on the same input. The label is checkable rather
-than a claim you have to take on trust.
+Operation counts over 30 random shuffles per size, taken from `--bench`
+and verified by replaying the operations:
 
-### Complexity argument — upper bounds
+| n   | simple | medium  | complex  | adaptive |
+|-----|--------|---------|----------|----------|
+| 50  | 436    | **276** | 467      | 276-467  |
+| 100 | 1461   | **728** | 1084     | 856      |
+| 500 | 32106  | 7241    | **6784** | 7009     |
 
-Time is counted in push_swap operations emitted, not in C-level work, as
-the subject requires. Space is auxiliary heap beyond the two stacks
-themselves (which are O(n) by definition).
+Adaptive at small sizes, over every permutation rather than a sample:
 
-| strategy | time (operations) | auxiliary space |
+| n | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|
+| avg ops | 0.5 | 1.2 | 4.1 | 7.3 | 22.8 | 26.6 |
+| max ops | 1 | 2 | 6 | 10 | 29 | 33 |
+
+The jump between 5 and 6 is where the small-stack routine hands over to
+the disorder-driven strategies.
+
+Three things we'd rather say ourselves than have someone find:
+
+Adaptive isn't the best of the four at either size. Random input sits on
+the Medium/Complex boundary, so it flips between them and averages out
+worse than just picking the right one by hand. Medium wins at n=100,
+Complex at n=500.
+
+We land in the second performance band, not the top one (under 700 at
+n=100, under 5500 at n=500). Above 50% disorder the subject requires an
+O(n·log n) method, and a perfect radix at n=100 already costs
+100 × 7 bits = 700 operations before any waste. Beating that band means
+finding something cheaper than radix that's still honestly O(n·log n),
+and we didn't.
+
+Complex costs more than Simple below roughly n=60. That's real, not a
+bug. Selection sort spends about n²/8 operations, radix about
+1.5·n·log₂(n), and the curves cross around there — at n=50 radix loses
+467 to 436. After the crossover it runs away with it: 1084 against 1492
+at n=100, and 6784 against 32106 at n=500.
+
+### Complexity, upper bounds
+
+Time is in push_swap operations printed, not C-level work. Space is heap
+we allocate on top of the two stacks, which are O(n) by definition.
+
+| strategy | time (operations) | extra space |
 |---|---|---|
 | Simple | O(n²) | O(1) |
 | Medium | O(n·√n) | O(n) |
 | Complex | O(n·log n) | O(n) |
 | Adaptive | O(n²) / O(n·√n) / O(n·log n) by regime | O(n) |
 
-**Simple.** Each of the n extractions rotates the minimum to the top in
-at most ⌊n/2⌋ moves (we rotate whichever way is shorter), then one `pb`.
-Draining back is n `pa`. Bounded by n·(n/2) + 2n, so O(n²). It allocates
-nothing.
+Simple does n extractions. Each one rotates the minimum up in at most
+⌊n/2⌋ moves, since we always rotate whichever direction is shorter, then
+one `pb`. Draining back is another n `pa`. That's n·(n/2) + 2n, so O(n²).
+It allocates nothing at all.
 
-**Medium.** The chunk size is 3.5·√n, so the number of chunks is
-⌈n / 3.5√n⌉ = O(√n). Each chunk costs one bounded sweep of the stack,
-at most n operations, giving O(n·√n) for all sweeps. Each element is
-drained with at most ⌊c/2⌋ rotations for chunk size c, and there are c
-elements per chunk over O(√n) chunks — O(√n · c²) = O(n·√n) again. Total
-O(n·√n). The sorted copy of the values is the O(n) space.
+Medium uses chunks of 3.5·√n, so there are ⌈n / 3.5√n⌉ = O(√n) of them.
+Each chunk is one bounded sweep of at most n operations, giving O(n·√n)
+across all the sweeps. Draining costs at most ⌊c/2⌋ rotations per element
+for chunk size c, with c elements in each of O(√n) chunks, so O(√n · c²),
+which is O(n·√n) again. The sorted copy of the values is the O(n) space.
 
-**Complex.** Ranks run 0..n-1, so ⌈log₂ n⌉ bit levels. Each level is one
-pass — at most n `pb`/`ra` plus at most n `pa` to reload — so at most 2n
-operations per level, O(n·log n) overall. The sorted copy used for the
-rank binary search is the O(n) space.
+Complex works on ranks 0..n-1, so there are ⌈log₂ n⌉ bit levels. Each
+level is one pass: at most n `pb`/`ra`, then at most n `pa` to reload.
+2n per level, O(n·log n) in total. The sorted copy used for the rank
+lookup is the O(n) space.
 
-**Adaptive.** For n ≤ 5 it emits a number of operations bounded by a
-constant (6 at n=4, 10 at n=5, measured over every permutation), so that
-branch is O(1) — which sits inside all three required bounds and
-therefore satisfies whichever regime the disorder selects. Above n=5 it
-delegates to exactly the strategy its regime requires, so it inherits
-that strategy's bound. Computing the disorder itself costs no push_swap
-operations at all; it is O(n²) C-level work over the input, done once
-before any move is emitted, and allocates nothing.
+Adaptive inherits both bounds from whichever of the three it delegated
+to, so in the worst case that's O(n²) operations and O(n) space, and in
+each regime it's the pair on that row of the table. Below n=6 it runs the
+small-stack routine instead: at most 6 operations at n=4 and 10 at n=5,
+capped by a constant rather than growing with n, so O(1) time, and it
+allocates nothing, so O(1) space. What each regime's bound describes is
+the composite of those two branches, and since the small one stops being
+reachable at n=6 the growth is the delegate's, unchanged. Measuring the disorder before any of
+that costs zero push_swap operations. It's O(n²) work down in C, done
+once before anything is printed, and it allocates nothing either.
 
-None of the sorting logic is recursive, so no strategy uses stack depth
-beyond O(1). The one recursive function in the project is `ft_putnbr_fd`,
-which recurses at most 10 times for a 32-bit int.
+Counting everything the program allocates, there are five places and all
+of them are O(n): the two stacks, the joined argument string and the
+filtered argv list that parsing builds, and the sorted copy of the values
+that Medium and Complex each need. The two parsing buffers are freed
+before any sorting starts and the sorted copy is freed before the
+strategy returns, so peak usage is O(n) whichever way the program is
+invoked.
 
-We measured the operation counts for every strategy against the subject's
-performance requirements (100 and 500 random numbers) — see the table
-above for where we actually land — and cross-checked correctness with an
-independent Python script that replays the operation stream and checks
-that `a` ends sorted and `b` ends empty.
+Nothing in the sorting logic recurses, so stack depth is O(1) throughout.
+The only recursive function in the project is `ft_putnbr_fd`, and that
+bottoms out after at most 10 calls for a 32-bit int.
+
+We checked the operation counts against the performance requirements for
+100 and 500 numbers (the table above shows where we land) and checked
+correctness with a Python script that replays the printed operations and
+confirms `a` comes out sorted with `b` empty.
 
 ## Resources
 
@@ -332,32 +337,68 @@ that `a` ends sorted and `b` ends empty.
 
 ### How we used AI
 
-We used Claude throughout this project, mostly for:
+We used Claude on this project for:
 
-- Walking through how the stack operations behave and tracing algorithms
-  by hand before writing any code, instead of just asking for code and
-  pasting it in.
-- Getting a first draft of each sorting strategy, which we then tested
-  and traced ourselves. One of them (the medium strategy's first version)
-  turned out to have a real bug — it could infinite-loop on certain
-  inputs — which we only caught by testing it, not by assuming it worked.
-  We had to redesign that part.
-- Debugging Makefile issues.
-- Fixing norm violations after running norminette and getting a list of
-  errors (too many functions in some files, functions too long, that
-  kind of thing).
+- Talking through how the stack operations behave, and tracing the
+  algorithms by hand before writing anything, rather than asking for
+  code and pasting it in.
+- A first draft of each sorting strategy, which we then tested and
+  traced ourselves. The medium strategy's first version had a real bug
+  in it — it could infinite-loop on some inputs — and we only found that
+  by testing, not by reading it. That part got redesigned.
+- Hunting bugs we'd missed. Two of the worse ones were a type mismatch
+  in the disorder code that made the program print nothing at all, and
+  `sort_tiny` mangling a three-element stack that was already sorted.
+  Both were found by testing every permutation rather than by reading.
+- Tuning: the `rb` trick in the medium sweep and the chunk multiplier
+  both came out of measuring options against each other.
+- Makefile problems, and cleaning up norm errors after running
+  norminette (too many functions in a file, functions over the line
+  limit, that kind of thing).
 
-Everything got tested before we trusted it — exhaustive checks on small
-inputs, random stress tests, and an independent Python script that
-replays the operations and checks the result — not just taken on faith
-because the AI said it should work.
+Everything got tested before we trusted it: exhaustive checks on the
+small sizes, random and adversarial stress tests, and the Python replay
+script. Nothing went in because the AI said it should work.
 
 Both of us went through the code together and can explain any part of it.
 
 ## Contributions
 
-- **krahnama**:
-  stack operations, medium and complex algorithm , debugging
+We paired on a lot of this, so most files have both our names on them in
+the history. The split below is who owned each piece and drove the design
+decisions in it.
 
-- **semirkar**:
-  stack operations, simple and adaptive algorithm, debugging
+**krahnama**
+
+- Medium strategy (`sort_medium.c`, `sort_medium_utils.c`): chunk
+  planning, the sweep-and-drain loop, the `rb` trick in the sweep, and
+  the testing that settled on a `3.5×√n` chunk size.
+- Complex strategy (`sort_complex.c`, `sort_complex_utils.c`): sorting by
+  rank instead of value, the binary search that finds a rank, and the
+  bit-level passes.
+- Command line handling (`main_flags.c`): strategy flags, rejecting a
+  repeated or conflicting flag, and splitting flags from stack data.
+- The Makefile and `includes/push_swap.h`.
+
+**semirkar**
+
+- Simple strategy (`sort_simple.c`): the min-extraction loop and the
+  bidirectional rotate that picks the shorter way round.
+- Adaptive strategy (`sort_adaptive.c`): threshold selection, the
+  three-element case, and the small-stack routine for four and five.
+- Disorder metric (`disorder.c`): pair counting, the sorted check, and
+  the two-decimal percentage output.
+- Benchmark mode (`bench.c`) and the program flow in `main.c`.
+
+**Both of us**
+
+- The eleven stack operations (`ops_swap.c`, `ops_push.c`,
+  `ops_rotate.c`, `ops_rrotate.c`) and the stack itself
+  (`stack_utils.c`).
+- Argument parsing and error handling (`parsing.c`,
+  `parsing_utils.c`, `ft_utils.c`).
+- Testing: the Python replay script, the exhaustive small-input checks,
+  the random and adversarial stress runs, and norminette cleanup.
+
+We reviewed each other's parts as they landed, and either of us can walk
+through any file in the project.
