@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/22 14:05:51 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/08/25 11:28:42 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	match_flag(char *arg, t_flags *flags)
 		set_flag_once(&flags->adaptive);
 	else if (ft_strequ(arg, "--bench"))
 		set_flag_once(&flags->bench);
+	else if (ft_strequ(arg, "--count-only"))
+		set_flag_once(&flags->count_only);
 	else
 		return (0);
 	return (1);
