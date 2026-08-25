@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/16 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/08/25 11:16:21 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/08/25 11:44:22 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	main(int argc, char **argv)
 	stack_init(&b, a.size);
 	stats = (t_stats){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, flags.count_only};
 	ctx = (t_run_ctx){&a, &b, &stats, disorder_of(&a), forced_method(&flags)};
-	if (!stack_is_sorted(&a))
 		ctx.method = run_sort(&flags, &ctx);
 	if (flags.bench)
 		print_bench(&stats, ctx.disorder,
